@@ -9,6 +9,8 @@ verify_ssl = true
 flask = "*"
 matplotlib = "*"
 pillow = "*"
+template-render = "*"
+template = "*"
 
 [requires]
 python_version = "3.7"
