@@ -1,6 +1,9 @@
 import argparse
 
+<<<<<<< Updated upstream
 print("Hell i am here")
+=======
+>>>>>>> Stashed changes
 
 book = open("book.txt", "r")
 
@@ -31,6 +34,9 @@ def cli():
 
     #Take the func argument, which points to our function and call it
     args.func(args)
+<<<<<<< Updated upstream
 
 
 book.close()
+=======
+>>>>>>> Stashed changes
