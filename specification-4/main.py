@@ -31,6 +31,8 @@ class Player(pygame.sprite.Sprite):
         self.surf = pygame.image.load("./resources/filimon stand.png").convert()
         self.surf.set_colorkey((136, 205, 250), RLEACCEL)
         self.rect = self.surf.get_rect()
+        self.rect.centerx = screen_width / 2
+        self.rect.bottom = screen_height
 
 
     def update(self):
