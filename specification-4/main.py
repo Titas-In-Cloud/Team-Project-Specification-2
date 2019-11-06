@@ -16,12 +16,12 @@ class Cloud(pygame.sprite.Sprite):
         self.surf = pygame.image.load("./resources/ship (2).png").convert()
         self.surf.set_colorkey((136, 205, 250), RLEACCEL)
         self.rect = self.surf.get_rect(center=(
-                random.randint(screen_width + 20, screen_width + 100),
-                random.randint(0, screen_height),
+                random.randint(100, 600),
+                random.randint(-150, -100),
         )
     )
     def update(self):
-        self.rect.move_ip(-5, 0)
+        self.rect.move_ip(0, 5)
         if self.rect.right < 0:
             self.kill()
 
@@ -34,7 +34,7 @@ class Player(pygame.sprite.Sprite):
 
 
     def update(self):
-        self.rect.move_ip(-5, 0)
+        self.rect.move_ip(5, 0)
         if self.rect.right < 0:
             self.kill()
 
@@ -68,15 +68,15 @@ class Enemy(pygame.sprite.Sprite):
         self.surf.set_colorkey((135, 206, 250), RLEACCEL)
         self.rect = self.surf.get_rect(
             center=(
-                random.randint(screen_width + 20, screen_width + 100),
-                random.randint(0, screen_height),
+                random.randint(150, 550),
+                random.randint(-150, -75),
             )
         )
         self.speed = random.randint(5, 20)
 
 
     def update(self):
-        self.rect.move_ip(-self.speed, 0)
+        self.rect.move_ip(0, self.speed)
         if self.rect.right < 0:
             self.kill()
 
