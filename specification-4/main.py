@@ -65,6 +65,9 @@ screen_height = 600
 screen = pygame.display.set_mode([screen_width, screen_height])
 
 player = Player()
+enemies = pygame.sprite.Group()
+all_sprites = pygame.sprite.Group()
+all_sprites.add(player)
 # Run until the user asks to quit
 running = True
 while running:
@@ -83,7 +86,8 @@ while running:
     # Fill the background with white
     screen.fill((255, 255, 255))
 
-    screen.blit(player.surf, player.rect)
+    for entity in all_sprites:
+        screen.blit(entity.surf, entity.rect)
 
     # Flip the display
     pygame.display.flip()
