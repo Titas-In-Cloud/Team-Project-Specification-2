@@ -74,7 +74,7 @@ class Enemy(pygame.sprite.Sprite):
                 random.randint(-150, -75),
             )
         )
-        self.speed = random.randint(5, 20)
+        self.speed = random.randint(2, 10)
 
 
     def update(self):
@@ -152,7 +152,7 @@ while running:
 
     # Flip the display
     pygame.display.flip()
-    clock.tick(15)
+    clock.tick(60)
 # Done! Time to quit.
 pygame.mixer.music.stop()
 pygame.mixer.quit()
