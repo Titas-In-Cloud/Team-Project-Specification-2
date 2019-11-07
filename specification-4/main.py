@@ -16,7 +16,7 @@ class Cloud(pygame.sprite.Sprite):
         self.surf = pygame.image.load("./resources/ship (2).png").convert()
         self.surf.set_colorkey((136, 205, 250), RLEACCEL)
         self.rect = self.surf.get_rect(center=(
-                random.randint(100, 600),
+                random.randint(100, screen_width - 100),
                 random.randint(-150, -100),
         )
     )
@@ -70,7 +70,7 @@ class Enemy(pygame.sprite.Sprite):
         self.surf.set_colorkey((135, 206, 250), RLEACCEL)
         self.rect = self.surf.get_rect(
             center=(
-                random.randint(150, 550),
+                random.randint(150, screen_width - 150),
                 random.randint(-150, -75),
             )
         )
@@ -87,6 +87,7 @@ pygame.mixer.init()
 pygame.init()
 screen_width = 800
 screen_height = 600
+pygame.display.set_caption("Arterius")
 clock = pygame.time.Clock()
 
 pygame.mixer.music.load("./resources/background.mp3")
