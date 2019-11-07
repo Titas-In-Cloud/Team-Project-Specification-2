@@ -43,10 +43,10 @@ class Player(pygame.sprite.Sprite):
         self.speed_x = 0
         self.speed_y = 0
         if pressed_keys[K_UP]:
-            self.speed_y = -8
+            self.speed_y = -5
             move_up_sound.play()
         if pressed_keys[K_DOWN]:
-            self.speed_y = 8
+            self.speed_y = 6
             move_down_sound.play()
         if pressed_keys[K_LEFT]:
             self.speed_x = -8
@@ -74,13 +74,16 @@ class Enemy(pygame.sprite.Sprite):
                 random.randint(-150, -75),
             )
         )
-        self.speed = random.randint(2, 10)
+        self.speed_x = random.randint(2, 10)
+        self.speed_y = random.randint(1,3)
 
 
     def update(self):
-        self.rect.move_ip(0, self.speed)
-        if self.rect.right < 0:
+        self.rect.move_ip(self.speed_y, self.speed_x)
+        if (self.rect.top > screen_height + 30 or self.rect.right >
+            screen_width + 30 or self.rect.left < -30):
             self.kill()
+
 
 
 pygame.mixer.init()
