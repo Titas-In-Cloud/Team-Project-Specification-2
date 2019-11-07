@@ -33,25 +33,25 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.surf.get_rect()
         self.rect.centerx = screen_width / 2
         self.rect.bottom = screen_height
+        self.speed_x = 0
+        self.speed_y = 0
 
 
-    def update(self):
-        self.rect.move_ip(5, 0)
-        if self.rect.right < 0:
-            self.kill()
-
-
-    def update1(self, pressed_keys):
+    def update(self, pressed_keys):
+        self.rect.x += self.speed_x
+        self.rect.y += self.speed_y
+        self.speed_x = 0
+        self.speed_y = 0
         if pressed_keys[K_UP]:
-            self.rect.move_ip(0, -5)
+            self.speed_y = -8
             move_up_sound.play()
         if pressed_keys[K_DOWN]:
-            self.rect.move_ip(0, 5)
+            self.speed_y = 8
             move_down_sound.play()
         if pressed_keys[K_LEFT]:
-            self.rect.move_ip(-5, 0)
+            self.speed_x = -8
         if pressed_keys[K_RIGHT]:
-            self.rect.move_ip(5, 0)
+            self.speed_x = 8
 
         if self.rect.left < 0:
             self.rect.left = 0
@@ -133,7 +133,7 @@ while running:
     collision_sound = pygame.mixer.Sound("./resources/beb.ogg")
 
     pressed_keys = pygame.key.get_pressed()
-    player.update1(pressed_keys)
+    player.update(pressed_keys)
 
     enemies.update()
     clouds.update()
