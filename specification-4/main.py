@@ -23,7 +23,7 @@ class Cloud(pygame.sprite.Sprite):
         ))
 
     def update(self):
-        self.rect.move_ip(0, 5)
+        self.rect.move_ip(0, random.randint(1, 5))
         if self.rect.right < 0:
             self.kill()
 
@@ -31,8 +31,8 @@ class Cloud(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super(Player, self).__init__()
-        self.surf = pygame.Surface((30, 50))
-        self.surf.fill((0, 0, 0))
+        self.surf = pygame.image.load("./resources/playerShip2_blue.png")
+        self.surf.set_colorkey((0, 0, 0), RLEACCEL)
         self.rect = self.surf.get_rect()
         self.rect.centerx = screen_width / 2
         self.rect.bottom = screen_height
@@ -65,6 +65,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.bottom = screen_height
 
     def shoot(self):
+        shoot_sound.play()
         bullet = Bullet(self.rect.centerx, self.rect.top)
         all_sprites.add(bullet)
         bullets.add(bullet)
@@ -73,14 +74,14 @@ class Player(pygame.sprite.Sprite):
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super(Bullet, self).__init__()
-        self.surf = pygame.Surface((10, 20))
-        self.surf.fill((255, 255, 255))
+        self.surf = pygame.image.load("./resources/laserBlue02.png")
+        self.surf.set_colorkey((0, 0, 0), RLEACCEL)
         self.rect = self.surf.get_rect()
         self.rect.bottom = y
         self.rect.centerx = x
         self.speed_y = -10
 
-    def update(self):
+    def update(self, pressed_keys):
         self.rect.move_ip(0, -10)
         if self.rect.bottom < 0:
             self.kill()
@@ -89,8 +90,8 @@ class Bullet(pygame.sprite.Sprite):
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super(Enemy, self).__init__()
-        self.surf = pygame.Surface((60, 100))
-        self.surf.fill((0, 255, 0))
+        self.surf = pygame.image.load("./resources/meteorBrown_big1.png")
+        self.surf.set_colorkey((0, 0, 0), RLEACCEL)
         self.rect = self.surf.get_rect(
             center=(
                 random.randint(150, screen_width - 150),
@@ -116,7 +117,6 @@ clock = pygame.time.Clock()
 
 pygame.mixer.music.load("./resources/background.mp3")
 pygame.mixer.music.play(loops=-1)
-# Set up the drawing window
 screen = pygame.display.set_mode([screen_width, screen_height])
 
 ADDENEMY = pygame.USEREVENT + 1
@@ -133,20 +133,18 @@ all_sprites.add(player)
 # Run until the user asks to quit
 running = True
 while running:
-
-    # Did the user click the window close button?
     for event in pygame.event.get():
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 running = False
+
             elif event.key == pygame.K_SPACE:
                 player.shoot()
+
         elif event.type == QUIT:
             running = False
 
-
         elif event.type == ADDENEMY:
-            # Create the new enemy and add it to sprite groups
             new_enemy = Enemy()
             enemies.add(new_enemy)
             all_sprites.add(new_enemy)
@@ -156,18 +154,20 @@ while running:
             clouds.add(new_cloud)
             all_sprites.add(new_cloud)
 
-
-    move_up_sound = pygame.mixer.Sound("./resources/rising pitch.ogg")
-    move_down_sound = pygame.mixer.Sound("./resources/falling pitch.ogg")
-    collision_sound = pygame.mixer.Sound("./resources/beb.ogg")
+    move_up_sound = pygame.mixer.Sound("./resources/phaserUp5.ogg")
+    move_down_sound = pygame.mixer.Sound("./resources/phaserDown2.ogg")
+    collision_sound = pygame.mixer.Sound("./resources/zapThreeToneDown.ogg")
+    shoot_sound = pygame.mixer.Sound("./resources/laser4.ogg")
 
     pressed_keys = pygame.key.get_pressed()
     player.update(pressed_keys)
-    bullets.update()
+    bullets.update(pressed_keys)
     enemies.update()
     clouds.update()
-    # Fill the background with white
-    screen.fill((135, 206, 250))
+    screen.fill((0, 0, 0))
+    background = pygame.image.load("./resources/starfield.png")
+    screen.blit(background, background.get_rect())
+
 
     for entity in all_sprites:
         screen.blit(entity.surf, entity.rect)
@@ -180,11 +180,8 @@ while running:
         running = False
 
     pygame.sprite.groupcollide(enemies, bullets, True, True)
-
-    # Flip the display
     pygame.display.flip()
     clock.tick(60)
-# Done! Time to quit.
 pygame.mixer.music.stop()
 pygame.mixer.quit()
 pygame.quit()
