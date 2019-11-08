@@ -15,8 +15,8 @@ from pygame.locals import (
 class Cloud(pygame.sprite.Sprite):
     def __init__(self):
         super(Cloud, self).__init__()
-        self.surf = pygame.image.load("./resources/ship (2).png").convert()
-        self.surf.set_colorkey((136, 205, 250), RLEACCEL)
+        self.surf = pygame.Surface((60, 60))
+        self.surf.fill((140, 140, 140))
         self.rect = self.surf.get_rect(center=(
                 random.randint(100, screen_width - 100),
                 random.randint(-150, -100),
@@ -31,8 +31,8 @@ class Cloud(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super(Player, self).__init__()
-        self.surf = pygame.image.load("./resources/filimon stand.png").convert()
-        self.surf.set_colorkey((136, 205, 250), RLEACCEL)
+        self.surf = pygame.Surface((30, 50))
+        self.surf.fill((0, 0, 0))
         self.rect = self.surf.get_rect()
         self.rect.centerx = screen_width / 2
         self.rect.bottom = screen_height
@@ -89,8 +89,8 @@ class Bullet(pygame.sprite.Sprite):
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super(Enemy, self).__init__()
-        self.surf = pygame.image.load("./resources/barrel.png").convert()
-        self.surf.set_colorkey((135, 206, 250), RLEACCEL)
+        self.surf = pygame.Surface((60, 100))
+        self.surf.fill((0, 255, 0))
         self.rect = self.surf.get_rect(
             center=(
                 random.randint(150, screen_width - 150),
@@ -98,7 +98,7 @@ class Enemy(pygame.sprite.Sprite):
             )
         )
         self.speed_x = random.randint(2, 10)
-        self.speed_y = random.randint(1, 3)
+        self.speed_y = random.randint(-3, 3)
 
     def update(self):
         self.rect.move_ip(self.speed_y, self.speed_x)
