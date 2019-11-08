@@ -10,23 +10,12 @@ from pygame.locals import (
     KEYDOWN,
     QUIT,
 )
-
-
-class Cloud(pygame.sprite.Sprite):
-    def __init__(self):
-        super(Cloud, self).__init__()
-        self.surf = pygame.Surface((60, 60))
-        self.surf.fill((140, 140, 140))
-        self.rect = self.surf.get_rect(center=(
-                random.randint(100, screen_width - 100),
-                random.randint(-150, -100),
-        ))
-
-    def update(self):
-        self.rect.move_ip(0, random.randint(1, 5))
-        if self.rect.right < 0:
-            self.kill()
-
+screen_width = 800
+screen_height = 600
+move_up_sound = pygame.mixer.Sound("./resources/phaserUp5.ogg")
+move_down_sound = pygame.mixer.Sound("./resources/phaserDown2.ogg")
+collision_sound = pygame.mixer.Sound("./resources/zapThreeToneDown.ogg")
+shoot_sound = pygame.mixer.Sound("./resources/laser4.ogg")
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -107,14 +96,19 @@ class Enemy(pygame.sprite.Sprite):
             screen_width + 30 or self.rect.left < -30):
             self.kill()
 
+font_name = pygame.font.match_font('arial')
+def draw_text(surf, text, size, x, y):
+    font = pygame.font.Font(font_name, size)
+    text_surface = font.render(text, True, (255, 255, 255))
+    text_rect = text_surface.get_rect()
+    text_rect.midtop = (x, y)
+    surf.blit(text_surface, text_rect)
 
 pygame.mixer.init()
 pygame.init()
-screen_width = 800
-screen_height = 600
 pygame.display.set_caption("Arterius")
 clock = pygame.time.Clock()
-
+result = 0
 pygame.mixer.music.load("./resources/background.mp3")
 pygame.mixer.music.play(loops=-1)
 screen = pygame.display.set_mode([screen_width, screen_height])
@@ -149,16 +143,6 @@ while running:
             enemies.add(new_enemy)
             all_sprites.add(new_enemy)
 
-        elif event.type == ADDCLOUD:
-            new_cloud = Cloud()
-            clouds.add(new_cloud)
-            all_sprites.add(new_cloud)
-
-    move_up_sound = pygame.mixer.Sound("./resources/phaserUp5.ogg")
-    move_down_sound = pygame.mixer.Sound("./resources/phaserDown2.ogg")
-    collision_sound = pygame.mixer.Sound("./resources/zapThreeToneDown.ogg")
-    shoot_sound = pygame.mixer.Sound("./resources/laser4.ogg")
-
     pressed_keys = pygame.key.get_pressed()
     player.update(pressed_keys)
     bullets.update(pressed_keys)
@@ -178,8 +162,11 @@ while running:
         move_down_sound.stop()
         collision_sound.play()
         running = False
+    scores = pygame.sprite.groupcollide(enemies, bullets, True, True)
+    for score in scores:
+        result += 50
+    draw_text(screen, str(result), 20, 100, 10)
 
-    pygame.sprite.groupcollide(enemies, bullets, True, True)
     pygame.display.flip()
     clock.tick(60)
 pygame.mixer.music.stop()
