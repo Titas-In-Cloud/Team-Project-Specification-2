@@ -12,6 +12,7 @@ from pygame.locals import (
 )
 screen_width = 800
 screen_height = 600
+pygame.mixer.init()
 move_up_sound = pygame.mixer.Sound("./resources/phaserUp5.ogg")
 move_down_sound = pygame.mixer.Sound("./resources/phaserDown2.ogg")
 collision_sound = pygame.mixer.Sound("./resources/zapThreeToneDown.ogg")
