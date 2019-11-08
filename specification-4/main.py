@@ -115,7 +115,7 @@ result = 0
 pygame.mixer.music.load("./resources/background.mp3")
 pygame.mixer.music.play(loops=-1)
 screen = pygame.display.set_mode([screen_width, screen_height])
-
+background = pygame.image.load("./resources/starfield.png")
 ADDENEMY = pygame.USEREVENT + 1
 pygame.time.set_timer(ADDENEMY, 250)
 ADDCLOUD = pygame.USEREVENT +2
@@ -127,69 +127,80 @@ enemies = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 # Run until the user asks to quit
-running = True
-while running:
+menu = True
+while menu:
+    screen.blit(background, background.get_rect())
+    draw_text(screen, "Arterius", 80, screen_width / 2, screen_height / 4)
+    draw_text(screen, "To move use arrow key, to shoot press space", 30,
+              screen_width / 2, screen_height / 2)
+    draw_text(screen, "Press any key to continue", 22, screen_width / 2, screen_height * 3 / 4)
+    pygame.display.flip()
     for event in pygame.event.get():
         if event.type == KEYDOWN:
-            if event.key == K_ESCAPE:
-                running = False
+            running = True
+            while running:
+                for event in pygame.event.get():
+                    if event.type == KEYDOWN:
+                        if event.key == K_ESCAPE:
+                            running = False
 
-            elif event.key == pygame.K_SPACE:
-                player.shoot()
+                        elif event.key == pygame.K_SPACE:
+                            player.shoot()
 
-        elif event.type == QUIT:
-            running = False
+                    elif event.type == QUIT:
+                        running = False
 
-        elif event.type == ADDENEMY:
-            new_enemy = Enemy()
-            enemies.add(new_enemy)
-            all_sprites.add(new_enemy)
+                    elif event.type == ADDENEMY:
+                        new_enemy = Enemy()
+                        enemies.add(new_enemy)
+                        all_sprites.add(new_enemy)
 
-    pressed_keys = pygame.key.get_pressed()
-    player.update(pressed_keys)
-    bullets.update(pressed_keys)
-    enemies.update()
-    screen.fill((0, 0, 0))
-    background = pygame.image.load("./resources/starfield.png")
-    screen.blit(background, background.get_rect())
+                pressed_keys = pygame.key.get_pressed()
+                player.update(pressed_keys)
+                bullets.update(pressed_keys)
+                enemies.update()
+                screen.fill((0, 0, 0))
+                screen.blit(background, background.get_rect())
+
+                for entity in all_sprites:
+                    screen.blit(entity.surf, entity.rect)
+
+                if pygame.sprite.spritecollide(player, enemies, False, pygame.sprite.collide_circle):
+                    player.kill()
+                    move_up_sound.stop()
+                    move_down_sound.stop()
+                    collision_sound.play()
+                    screen.blit(background, background.get_rect())
+                    draw_text(screen, "Game over", 120, screen_width / 2, screen_height / 4)
+                    draw_text(screen, "Press any key to play again", 50, screen_width / 2, screen_height * 3 / 4)
+                    draw_text(screen, "Your score was:" + " " + str(result), 40, screen_width / 2, screen_height / 2)
+                    pygame.display.flip()
+                    reset = True
+                    while reset:
+                        clock.tick(60)
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                pygame.quit()
+
+                            if event.type == KEYDOWN:
+                                reset = False
+                    all_sprites = pygame.sprite.Group()
+                    enemies = pygame.sprite.Group()
+                    bullets = pygame.sprite.Group()
+                    player = Player()
+                    all_sprites.add(player)
+                    result = 0
+                scores = pygame.sprite.groupcollide(enemies, bullets, True, True)
+                for score in scores:
+                    result += 50
+                draw_text(screen, str(result), 20, 100, 10)
+
+                pygame.display.flip()
+                clock.tick(60)
+        elif event.type ==pygame.QUIT:
+            pygame.quit()
 
 
-    for entity in all_sprites:
-        screen.blit(entity.surf, entity.rect)
-
-    if pygame.sprite.spritecollide(player, enemies, False, pygame.sprite.collide_circle):
-        player.kill()
-        move_up_sound.stop()
-        move_down_sound.stop()
-        collision_sound.play()
-        screen.blit(background, background.get_rect())
-        draw_text(screen, "Arterius", 80, screen_width / 2, screen_height / 4)
-        draw_text(screen, "To move use arrow key, to shoot press space", 30,
-                  screen_width / 2, screen_height / 2)
-        draw_text(screen, "Press any key to continue", 22, screen_width / 2, screen_height * 3 / 4)
-        pygame.display.flip()
-        reset = True
-        while reset:
-            clock.tick(60)
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-
-                if event.type == KEYDOWN:
-                    reset = False
-        all_sprites = pygame.sprite.Group()
-        enemies = pygame.sprite.Group()
-        bullets = pygame.sprite.Group()
-        player = Player()
-        all_sprites.add(player)
-        result = 0
-    scores = pygame.sprite.groupcollide(enemies, bullets, True, True)
-    for score in scores:
-        result += 50
-    draw_text(screen, str(result), 20, 100, 10)
-
-    pygame.display.flip()
-    clock.tick(60)
 pygame.mixer.music.stop()
 pygame.mixer.quit()
 pygame.quit()
