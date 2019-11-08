@@ -124,7 +124,6 @@ pygame.time.set_timer(ADDCLOUD, 1000)
 player = Player()
 bullets = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
-clouds = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 # Run until the user asks to quit
@@ -150,7 +149,6 @@ while running:
     player.update(pressed_keys)
     bullets.update(pressed_keys)
     enemies.update()
-    clouds.update()
     screen.fill((0, 0, 0))
     background = pygame.image.load("./resources/starfield.png")
     screen.blit(background, background.get_rect())
@@ -164,7 +162,27 @@ while running:
         move_up_sound.stop()
         move_down_sound.stop()
         collision_sound.play()
-        running = False
+        screen.blit(background, background.get_rect())
+        draw_text(screen, "Arterius", 80, screen_width / 2, screen_height / 4)
+        draw_text(screen, "To move use arrow key, to shoot press space", 30,
+                  screen_width / 2, screen_height / 2)
+        draw_text(screen, "Press any key to continue", 22, screen_width / 2, screen_height * 3 / 4)
+        pygame.display.flip()
+        reset = True
+        while reset:
+            clock.tick(60)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+
+                if event.type == KEYDOWN:
+                    reset = False
+        all_sprites = pygame.sprite.Group()
+        enemies = pygame.sprite.Group()
+        bullets = pygame.sprite.Group()
+        player = Player()
+        all_sprites.add(player)
+        result = 0
     scores = pygame.sprite.groupcollide(enemies, bullets, True, True)
     for score in scores:
         result += 50
