@@ -24,6 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.surf = pygame.image.load("./resources/playerShip2_blue.png")
         self.surf.set_colorkey((0, 0, 0), RLEACCEL)
         self.rect = self.surf.get_rect()
+        self.radius = 18
         self.rect.centerx = screen_width / 2
         self.rect.bottom = screen_height
         self.speed_x = 0
@@ -88,6 +89,7 @@ class Enemy(pygame.sprite.Sprite):
                 random.randint(-150, -75),
             )
         )
+        self.radius = 65
         self.speed_x = random.randint(2, 10)
         self.speed_y = random.randint(-3, 3)
 
@@ -157,7 +159,7 @@ while running:
     for entity in all_sprites:
         screen.blit(entity.surf, entity.rect)
 
-    if pygame.sprite.spritecollideany(player, enemies):
+    if pygame.sprite.spritecollide(player, enemies, False, pygame.sprite.collide_circle):
         player.kill()
         move_up_sound.stop()
         move_down_sound.stop()
