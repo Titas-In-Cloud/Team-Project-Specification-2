@@ -1,6 +1,8 @@
 import pygame
 import random
 from pygame.locals import (
+    K_RETURN,
+    K_KP_ENTER,
     RLEACCEL,
     K_UP,
     K_DOWN,
@@ -99,7 +101,10 @@ class Enemy(pygame.sprite.Sprite):
             screen_width + 30 or self.rect.left < -30):
             self.kill()
 
+
 font_name = pygame.font.match_font('arial')
+
+
 def draw_text(surf, text, size, x, y):
     font = pygame.font.Font(font_name, size)
     text_surface = font.render(text, True, (255, 255, 255))
@@ -107,7 +112,6 @@ def draw_text(surf, text, size, x, y):
     text_rect.midtop = (x, y)
     surf.blit(text_surface, text_rect)
 
-pygame.mixer.init()
 pygame.init()
 pygame.display.set_caption("Arterius")
 clock = pygame.time.Clock()
@@ -131,73 +135,79 @@ menu = True
 while menu:
     screen.blit(background, background.get_rect())
     draw_text(screen, "Arterius", 80, screen_width / 2, screen_height / 4)
-    draw_text(screen, "To move use arrow key, to shoot press space", 30,
+    draw_text(screen, "To move use arrow keys, to shoot press space", 30,
               screen_width / 2, screen_height / 2)
-    draw_text(screen, "Press any key to continue", 22, screen_width / 2, screen_height * 3 / 4)
+    draw_text(screen, "Press enter to continue", 22, screen_width / 2, screen_height * 3 / 4)
     pygame.display.flip()
+
     for event in pygame.event.get():
         if event.type == KEYDOWN:
-            running = True
-            while running:
-                for event in pygame.event.get():
-                    if event.type == KEYDOWN:
-                        if event.key == K_ESCAPE:
+            if event.key == K_KP_ENTER or K_RETURN:
+                running = True
+                while running:
+                    for event in pygame.event.get():
+                        if event.type == KEYDOWN:
+                            if event.key == K_ESCAPE:
+                                running = False
+                                menu = False
+
+
+                            elif event.key == pygame.K_SPACE:
+                                player.shoot()
+
+                        elif event.type == QUIT:
                             running = False
 
-                        elif event.key == pygame.K_SPACE:
-                            player.shoot()
+                        elif event.type == ADDENEMY:
+                            new_enemy = Enemy()
+                            enemies.add(new_enemy)
+                            all_sprites.add(new_enemy)
 
-                    elif event.type == QUIT:
-                        running = False
-
-                    elif event.type == ADDENEMY:
-                        new_enemy = Enemy()
-                        enemies.add(new_enemy)
-                        all_sprites.add(new_enemy)
-
-                pressed_keys = pygame.key.get_pressed()
-                player.update(pressed_keys)
-                bullets.update(pressed_keys)
-                enemies.update()
-                screen.fill((0, 0, 0))
-                screen.blit(background, background.get_rect())
-
-                for entity in all_sprites:
-                    screen.blit(entity.surf, entity.rect)
-
-                if pygame.sprite.spritecollide(player, enemies, False, pygame.sprite.collide_circle):
-                    player.kill()
-                    move_up_sound.stop()
-                    move_down_sound.stop()
-                    collision_sound.play()
+                    pressed_keys = pygame.key.get_pressed()
+                    player.update(pressed_keys)
+                    bullets.update(pressed_keys)
+                    enemies.update()
+                    screen.fill((0, 0, 0))
                     screen.blit(background, background.get_rect())
-                    draw_text(screen, "Game over", 120, screen_width / 2, screen_height / 4)
-                    draw_text(screen, "Press any key to play again", 50, screen_width / 2, screen_height * 3 / 4)
-                    draw_text(screen, "Your score was:" + " " + str(result), 40, screen_width / 2, screen_height / 2)
+
+                    for entity in all_sprites:
+                        screen.blit(entity.surf, entity.rect)
+
+                    if pygame.sprite.spritecollide(player, enemies, False, pygame.sprite.collide_circle):
+                        player.kill()
+                        move_up_sound.stop()
+                        move_down_sound.stop()
+                        collision_sound.play()
+                        screen.blit(background, background.get_rect())
+                        draw_text(screen, "Game over", 120, screen_width / 2, screen_height / 4)
+                        draw_text(screen, "Press any key to play again", 50, screen_width / 2, screen_height * 3 / 4)
+                        draw_text(screen, "Your score was:" + " " + str(result), 40, screen_width / 2, screen_height / 2)
+                        pygame.display.flip()
+                        reset = True
+                        while reset:
+                            clock.tick(60)
+                            for event in pygame.event.get():
+                                if event.type == pygame.QUIT:
+                                    pygame.quit()
+
+                                if event.type == KEYDOWN:
+                                    reset = False
+                        all_sprites = pygame.sprite.Group()
+                        enemies = pygame.sprite.Group()
+                        bullets = pygame.sprite.Group()
+                        player = Player()
+                        all_sprites.add(player)
+                        result = 0
+                    scores = pygame.sprite.groupcollide(enemies, bullets, True, True)
+                    for score in scores:
+                        result += 50
+                    draw_text(screen, str(result), 20, 100, 10)
+
                     pygame.display.flip()
-                    reset = True
-                    while reset:
-                        clock.tick(60)
-                        for event in pygame.event.get():
-                            if event.type == pygame.QUIT:
-                                pygame.quit()
-
-                            if event.type == KEYDOWN:
-                                reset = False
-                    all_sprites = pygame.sprite.Group()
-                    enemies = pygame.sprite.Group()
-                    bullets = pygame.sprite.Group()
-                    player = Player()
-                    all_sprites.add(player)
-                    result = 0
-                scores = pygame.sprite.groupcollide(enemies, bullets, True, True)
-                for score in scores:
-                    result += 50
-                draw_text(screen, str(result), 20, 100, 10)
-
-                pygame.display.flip()
-                clock.tick(60)
-        elif event.type ==pygame.QUIT:
+                    clock.tick(60)
+            elif event.key == K_ESCAPE:
+                pygame.quit()
+        elif event.type == pygame.QUIT:
             pygame.quit()
 
 
