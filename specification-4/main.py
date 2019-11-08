@@ -2,7 +2,7 @@ import pygame
 import random
 from pygame.locals import (
     K_RETURN,
-    K_KP_ENTER,
+    KEYUP,
     RLEACCEL,
     K_UP,
     K_DOWN,
@@ -142,7 +142,7 @@ while menu:
 
     for event in pygame.event.get():
         if event.type == KEYDOWN:
-            if event.key == K_KP_ENTER or K_RETURN:
+            if event.key == K_RETURN:
                 running = True
                 while running:
                     for event in pygame.event.get():
@@ -150,7 +150,6 @@ while menu:
                             if event.key == K_ESCAPE:
                                 running = False
                                 menu = False
-
 
                             elif event.key == pygame.K_SPACE:
                                 player.shoot()
@@ -190,7 +189,7 @@ while menu:
                                 if event.type == pygame.QUIT:
                                     pygame.quit()
 
-                                if event.type == KEYDOWN:
+                                if event.type == KEYUP:
                                     reset = False
                         all_sprites = pygame.sprite.Group()
                         enemies = pygame.sprite.Group()
