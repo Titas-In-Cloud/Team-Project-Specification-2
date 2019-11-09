@@ -80,9 +80,9 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
 
 
-class Enemy(pygame.sprite.Sprite):
+class Meteor(pygame.sprite.Sprite):
     def __init__(self):
-        super(Enemy, self).__init__()
+        super(Meteor, self).__init__()
         self.surf = pygame.image.load("./practical-3/specification-4/resources/meteorBrown_big1.png")
         self.surf.set_colorkey((0, 0, 0), RLEACCEL)
         self.rect = self.surf.get_rect(
@@ -92,13 +92,51 @@ class Enemy(pygame.sprite.Sprite):
             )
         )
         self.radius = 65
-        self.speed_x = random.randint(2, 10)
-        self.speed_y = random.randint(-3, 3)
+        self.speed_y = random.randint(2, 10)
+        self.speed_x = random.randint(-3, 3)
 
     def update(self):
-        self.rect.move_ip(self.speed_y, self.speed_x)
+        self.rect.move_ip(self.speed_x, self.speed_y)
         if (self.rect.top > screen_height + 30 or self.rect.right >
             screen_width + 30 or self.rect.left < -30):
+            self.kill()
+
+
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Enemy, self).__init__()
+        self.surf = pygame.image.load("./practical-3/specification-4/resources/enemyRed1.png")
+        self.surf.set_colorkey((0, 0, 0), RLEACCEL)
+        self.rect = self.surf.get_rect(
+            center =(
+                random.randint(screen_width / 2 - 200, screen_width / 2 + 200),
+                random.randint(-100, -50)
+            )
+        )
+        self.radius = 18
+        self.speed_x = random.randint(-7, 7)
+        self.speed_y = random.randint(-1, 1)
+
+    def update(self):
+        self.rect.move_ip(self.speed_x, self.speed_y)
+        if (self.rect.top > screen_height + 30 or self.rect.right >
+                screen_width + 30 or self.rect.left < -30):
+            self.kill()
+
+
+class EnemyBullet(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super(EnemyBullet, self).__init__()
+        self.surf = pygame.image.load("./practical-3/specification-4/resources/laserBlue02.png")
+        self.surf.set_colorkey((0, 0, 0), RLEACCEL)
+        self.rect = self.surf.get_rect()
+        self.rect.bottom = y
+        self.rect.centerx = x
+        self.speed_y = -10
+
+    def update(self, pressed_keys):
+        self.rect.move_ip(0, 10)
+        if self.rect.top > screen_height:
             self.kill()
 
 
@@ -112,6 +150,7 @@ def draw_text(surf, text, size, x, y):
     text_rect.midtop = (x, y)
     surf.blit(text_surface, text_rect)
 
+
 pygame.init()
 pygame.display.set_caption("Arterius")
 clock = pygame.time.Clock()
@@ -120,14 +159,15 @@ pygame.mixer.music.load("./practical-3/specification-4/resources/background.mp3"
 pygame.mixer.music.play(loops=-1)
 screen = pygame.display.set_mode([screen_width, screen_height])
 background = pygame.image.load("./practical-3/specification-4/resources/starfield.png")
-ADDENEMY = pygame.USEREVENT + 1
-pygame.time.set_timer(ADDENEMY, 250)
-ADDCLOUD = pygame.USEREVENT +2
-pygame.time.set_timer(ADDCLOUD, 1000)
+ADDMETEOR = pygame.USEREVENT + 1
+pygame.time.set_timer(ADDMETEOR, 250)
+ADDENEMY = pygame.USEREVENT + 2
+pygame.time.set_timer(ADDENEMY, 1000)
 
 player = Player()
-bullets = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
+bullets = pygame.sprite.Group()
+meteors = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 # Run until the user asks to quit
@@ -157,6 +197,11 @@ while menu:
                         elif event.type == QUIT:
                             running = False
 
+                        elif event.type == ADDMETEOR:
+                            new_meteor = Meteor()
+                            meteors.add(new_meteor)
+                            all_sprites.add(new_meteor)
+
                         elif event.type == ADDENEMY:
                             new_enemy = Enemy()
                             enemies.add(new_enemy)
@@ -165,6 +210,7 @@ while menu:
                     pressed_keys = pygame.key.get_pressed()
                     player.update(pressed_keys)
                     bullets.update(pressed_keys)
+                    meteors.update()
                     enemies.update()
                     screen.fill((0, 0, 0))
                     screen.blit(background, background.get_rect())
@@ -172,7 +218,7 @@ while menu:
                     for entity in all_sprites:
                         screen.blit(entity.surf, entity.rect)
 
-                    if pygame.sprite.spritecollide(player, enemies, False, pygame.sprite.collide_circle):
+                    if pygame.sprite.spritecollide(player, meteors, False, pygame.sprite.collide_circle):
                         player.kill()
                         move_up_sound.stop()
                         move_down_sound.stop()
@@ -192,12 +238,13 @@ while menu:
                                 if event.type == KEYUP:
                                     reset = False
                         all_sprites = pygame.sprite.Group()
-                        enemies = pygame.sprite.Group()
+                        meteors = pygame.sprite.Group()
                         bullets = pygame.sprite.Group()
+                        enemies = pygame.sprite.group()
                         player = Player()
                         all_sprites.add(player)
                         result = 0
-                    scores = pygame.sprite.groupcollide(enemies, bullets, True, True)
+                    scores = pygame.sprite.groupcollide(meteors, bullets, True, True)
                     for score in scores:
                         result += 50
                     draw_text(screen, str(result), 20, 100, 10)
