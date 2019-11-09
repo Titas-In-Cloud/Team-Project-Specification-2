@@ -15,15 +15,15 @@ from pygame.locals import (
 screen_width = 800
 screen_height = 600
 pygame.mixer.init()
-move_up_sound = pygame.mixer.Sound("./resources/phaserUp5.ogg")
-move_down_sound = pygame.mixer.Sound("./resources/phaserDown2.ogg")
-collision_sound = pygame.mixer.Sound("./resources/zapThreeToneDown.ogg")
-shoot_sound = pygame.mixer.Sound("./resources/laser4.ogg")
+move_up_sound = pygame.mixer.Sound("./practical-3/specification-4/resources/phaserUp5.ogg")
+move_down_sound = pygame.mixer.Sound("./practical-3/specification-4/resources/phaserDown2.ogg")
+collision_sound = pygame.mixer.Sound("./practical-3/specification-4/resources/zapThreeToneDown.ogg")
+shoot_sound = pygame.mixer.Sound("./practical-3/specification-4/resources/laser4.ogg")
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super(Player, self).__init__()
-        self.surf = pygame.image.load("./resources/playerShip2_blue.png")
+        self.surf = pygame.image.load("./practical-3/specification-4/resources/playerShip2_blue.png")
         self.surf.set_colorkey((0, 0, 0), RLEACCEL)
         self.rect = self.surf.get_rect()
         self.radius = 18
@@ -67,7 +67,7 @@ class Player(pygame.sprite.Sprite):
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super(Bullet, self).__init__()
-        self.surf = pygame.image.load("./resources/laserBlue02.png")
+        self.surf = pygame.image.load("./practical-3/specification-4/resources/laserBlue02.png")
         self.surf.set_colorkey((0, 0, 0), RLEACCEL)
         self.rect = self.surf.get_rect()
         self.rect.bottom = y
@@ -83,7 +83,7 @@ class Bullet(pygame.sprite.Sprite):
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super(Enemy, self).__init__()
-        self.surf = pygame.image.load("./resources/meteorBrown_big1.png")
+        self.surf = pygame.image.load("./practical-3/specification-4/resources/meteorBrown_big1.png")
         self.surf.set_colorkey((0, 0, 0), RLEACCEL)
         self.rect = self.surf.get_rect(
             center=(
@@ -116,10 +116,10 @@ pygame.init()
 pygame.display.set_caption("Arterius")
 clock = pygame.time.Clock()
 result = 0
-pygame.mixer.music.load("./resources/background.mp3")
+pygame.mixer.music.load("./practical-3/specification-4/resources/background.mp3")
 pygame.mixer.music.play(loops=-1)
 screen = pygame.display.set_mode([screen_width, screen_height])
-background = pygame.image.load("./resources/starfield.png")
+background = pygame.image.load("./practical-3/specification-4/resources/starfield.png")
 ADDENEMY = pygame.USEREVENT + 1
 pygame.time.set_timer(ADDENEMY, 250)
 ADDCLOUD = pygame.USEREVENT +2
