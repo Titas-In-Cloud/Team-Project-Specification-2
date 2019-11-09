@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from forms import RegistrationForm, LoginForm
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
+app.config['SECRET_KEY'] = 'c5bbd3bef1e17016c3c5327b7814eb2e'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 
 
