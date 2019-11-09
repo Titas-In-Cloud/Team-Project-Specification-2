@@ -218,7 +218,8 @@ while menu:
                     for entity in all_sprites:
                         screen.blit(entity.surf, entity.rect)
 
-                    if pygame.sprite.spritecollide(player, meteors, False, pygame.sprite.collide_circle):
+                    if pygame.sprite.spritecollide(player, meteors, False, pygame.sprite.collide_circle) or (
+                            pygame.sprite.spritecollide(player, enemies, False, pygame.sprite.collide_circle)):
                         player.kill()
                         move_up_sound.stop()
                         move_down_sound.stop()

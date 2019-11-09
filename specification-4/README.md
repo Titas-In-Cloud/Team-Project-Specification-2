@@ -14,6 +14,8 @@ Run in the terminal:
 To run the game in the terminal type:
     
     python ./practical-3/specification-4/main.py
+    
+Most importantly have fun!
 
 
 
