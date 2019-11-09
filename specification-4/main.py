@@ -12,6 +12,7 @@ from pygame.locals import (
     KEYDOWN,
     QUIT,
 )
+
 screen_width = 800
 screen_height = 600
 pygame.mixer.init()
@@ -19,6 +20,8 @@ move_up_sound = pygame.mixer.Sound("./practical-3/specification-4/resources/phas
 move_down_sound = pygame.mixer.Sound("./practical-3/specification-4/resources/phaserDown2.ogg")
 collision_sound = pygame.mixer.Sound("./practical-3/specification-4/resources/zapThreeToneDown.ogg")
 shoot_sound = pygame.mixer.Sound("./practical-3/specification-4/resources/laser4.ogg")
+pygame.init()
+
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -97,9 +100,11 @@ class Meteor(pygame.sprite.Sprite):
 
     def update(self):
         self.rect.move_ip(self.speed_x, self.speed_y)
-        if (self.rect.top > screen_height + 30 or self.rect.right >
-            screen_width + 30 or self.rect.left < -30):
+        if (self.rect.top > screen_height + 30 or self.rect.left >
+            screen_width + 30 or self.rect.right < -30):
             self.kill()
+
+
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -108,20 +113,25 @@ class Enemy(pygame.sprite.Sprite):
         self.surf = pygame.image.load("./practical-3/specification-4/resources/enemyRed1.png")
         self.surf.set_colorkey((0, 0, 0), RLEACCEL)
         self.rect = self.surf.get_rect(
-            center =(
-                random.randint(screen_width / 2 - 200, screen_width / 2 + 200),
-                random.randint(-100, -50)
-            )
-        )
+            center = (random.randint(150, screen_width - 150),
+                random.randint(-50, -15),))
         self.radius = 18
-        self.speed_x = random.randint(-7, 7)
-        self.speed_y = random.randint(-1, 1)
+        r = random.choice([(-6, -5), (5, 6)])
+        self.speed_x = random.randint(*r)
+        self.speed_y = random.randint(3, 5)
 
     def update(self):
         self.rect.move_ip(self.speed_x, self.speed_y)
         if (self.rect.top > screen_height + 30 or self.rect.right >
                 screen_width + 30 or self.rect.left < -30):
             self.kill()
+        else:
+            shoot_sound.play()
+            enemybullet = EnemyBullet(self.rect.centerx, self.rect.bottom)
+            all_sprites.add(enemybullet)
+            enemybullets.add(enemybullet)
+
+
 
 
 class EnemyBullet(pygame.sprite.Sprite):
@@ -132,12 +142,13 @@ class EnemyBullet(pygame.sprite.Sprite):
         self.rect = self.surf.get_rect()
         self.rect.bottom = y
         self.rect.centerx = x
-        self.speed_y = -10
+        self.speed_y = 5
 
-    def update(self, pressed_keys):
-        self.rect.move_ip(0, 10)
+    def update(self):
+        self.rect.y += self.speed_y
         if self.rect.top > screen_height:
             self.kill()
+
 
 
 font_name = pygame.font.match_font('arial')
@@ -151,7 +162,7 @@ def draw_text(surf, text, size, x, y):
     surf.blit(text_surface, text_rect)
 
 
-pygame.init()
+
 pygame.display.set_caption("Arterius")
 clock = pygame.time.Clock()
 result = 0
@@ -160,14 +171,15 @@ pygame.mixer.music.play(loops=-1)
 screen = pygame.display.set_mode([screen_width, screen_height])
 background = pygame.image.load("./practical-3/specification-4/resources/starfield.png")
 ADDMETEOR = pygame.USEREVENT + 1
-pygame.time.set_timer(ADDMETEOR, 250)
+pygame.time.set_timer(ADDMETEOR, 500)
 ADDENEMY = pygame.USEREVENT + 2
-pygame.time.set_timer(ADDENEMY, 1000)
+pygame.time.set_timer(ADDENEMY, 2500)
 
 player = Player()
 enemies = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
 meteors = pygame.sprite.Group()
+enemybullets = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 # Run until the user asks to quit
@@ -194,6 +206,9 @@ while menu:
                             elif event.key == pygame.K_SPACE:
                                 player.shoot()
 
+                            elif event.key == pygame.K_KP_ENTER:
+                                enemies.update()
+
                         elif event.type == QUIT:
                             running = False
 
@@ -206,12 +221,14 @@ while menu:
                             new_enemy = Enemy()
                             enemies.add(new_enemy)
                             all_sprites.add(new_enemy)
+                            enemies.update()
 
                     pressed_keys = pygame.key.get_pressed()
                     player.update(pressed_keys)
                     bullets.update(pressed_keys)
                     meteors.update()
                     enemies.update()
+                    enemybullets.update()
                     screen.fill((0, 0, 0))
                     screen.blit(background, background.get_rect())
 
@@ -219,8 +236,10 @@ while menu:
                         screen.blit(entity.surf, entity.rect)
 
                     if pygame.sprite.spritecollide(player, meteors, False, pygame.sprite.collide_circle) or (
-                            pygame.sprite.spritecollide(player, enemies, False, pygame.sprite.collide_circle)):
+                            pygame.sprite.spritecollide(player, enemies, False, pygame.sprite.collide_circle)) or (
+                            pygame.sprite.spritecollide(player, enemybullets, False, pygame.sprite.collide_circle)):
                         player.kill()
+                        shoot_sound.stop()
                         move_up_sound.stop()
                         move_down_sound.stop()
                         collision_sound.play()
@@ -241,12 +260,16 @@ while menu:
                         all_sprites = pygame.sprite.Group()
                         meteors = pygame.sprite.Group()
                         bullets = pygame.sprite.Group()
-                        enemies = pygame.sprite.group()
+                        enemies = pygame.sprite.Group()
+                        enemybullets = pygame.sprite.Group()
                         player = Player()
                         all_sprites.add(player)
                         result = 0
                     scores = pygame.sprite.groupcollide(meteors, bullets, True, True)
+                    enemies_down = pygame.sprite.groupcollide(enemies, bullets, True, True)
                     for score in scores:
+                        result += 50
+                    for enemy_down in enemies_down:
                         result += 50
                     draw_text(screen, str(result), 20, 100, 10)
 
