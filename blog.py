@@ -5,9 +5,12 @@ from forms import RegistrationForm, LoginForm
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'c5bbd3bef1e17016c3c5327b7814eb2e'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-
-
 db = SQLAlchemy(app)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), unique=True, nullable=False)
+    username = db.Column(db.String(120), unique=True, nullable=False)
 
 posts = [
     {
