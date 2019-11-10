@@ -37,7 +37,7 @@ posts = [
         'author': 'Lapshun Chung',
         'title': 'Specification 1',
         'content': 'Exploring frequency analysis of large text files and producing a visual way of analysis results. '
-                   ,
+        ,
         'date_posted': 'Nov 12, 2019'
     },
     {
@@ -49,7 +49,7 @@ posts = [
     {
         'author': 'Jay Mavin',
         'title': 'Specification 3',
-        'content': 'Making my first web application using Flask library. This can be found in the Home page',
+        'content': 'Making a web application using the Flask library. This can be found in the Home page',
         'date_posted': 'Nov 10, 2019'
     },
 
@@ -65,7 +65,8 @@ posts = [
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template('home.html', posts=posts)
+    return render_template('home.html', posts=posts, title='Specification 3')
+
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -88,9 +89,19 @@ def login():
     return render_template('login.html', title='Login', form=form)
 
 
-@app.route("/spec-1")
+@app.route("/spec1")
 def spec1():
-    return render_template('spec-1.html', title='Specification-1')
+    return render_template('spec-1.html', title='Specification 1')
+
+
+@app.route("/spec2")
+def spec2():
+    return render_template('spec-2.html', title='Specification 2')
+
+
+@app.route("/spec4")
+def spec4():
+    return render_template('spec-4.html', title='Specification 4')
 
 
 if __name__ == '__main__':
