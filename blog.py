@@ -99,6 +99,11 @@ def spec2():
     return render_template('spec-2.html', title='Specification 2')
 
 
+@app.route("/spec3")
+def spec3():
+    return render_template('spec-3.html', title='Specification 3')
+
+
 @app.route("/spec4")
 def spec4():
     return render_template('spec-4.html', title='Specification 4')
