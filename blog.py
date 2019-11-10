@@ -65,7 +65,7 @@ posts = [
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template('home.html', posts=posts, title='Specification 3')
+    return render_template('home.html', posts=posts)
 
 
 @app.route("/register", methods=['GET', 'POST'])
