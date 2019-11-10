@@ -20,6 +20,7 @@ class User(db.Model):
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}'"
 
+
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -30,18 +31,32 @@ class Post(db.Model):
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
 
+
 posts = [
     {
-        'author': 'Jay Mavin',
-        'title': 'Blog Post 1',
-        'content': 'First post content',
-        'date_posted': 'April 20, 2018'
+        'author': 'Lapshun Chung',
+        'title': 'Specification 1',
+        'content': 'Exploring frequency analysis of large text files and producing a visual way of analysis results.',
+        'date_posted': 'Nov 12, 2019'
     },
     {
-        'author': 'James Roh',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'April 21, 2018'
+        'author': 'Titas Petelis',
+        'title': 'Specification 2',
+        'content': 'Exploring image manipulation using the Pillow Python library.',
+        'date_posted': 'Nov 11, 2019'
+    },
+    {
+        'author': 'Jay Mavin',
+        'title': 'Specification 3',
+        'content': 'Making my first web application using Flask library.',
+        'date_posted': 'Nov 10, 2019'
+    },
+
+    {
+        'author': 'Wojciech Bigosinski',
+        'title': 'Specification 4',
+        'content': 'Developing a software artefact.',
+        'date_posted': 'Nov 8, 2019'
     }
 ]
 
@@ -74,7 +89,7 @@ def login():
             flash('You have been logged in!', 'success')
             return redirect(url_for('home'))
         else:
-            flash('Login Unsuccessful. Please check username and password', 'danger')
+            flash('Login Unsuccessful. Please check your username and password', 'danger')
     return render_template('login.html', title='Login', form=form)
 
 
