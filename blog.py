@@ -36,7 +36,8 @@ posts = [
     {
         'author': 'Lapshun Chung',
         'title': 'Specification 1',
-        'content': 'Exploring frequency analysis of large text files and producing a visual way of analysis results.',
+        'content': 'Exploring frequency analysis of large text files and producing a visual way of analysis results. '
+                   ,
         'date_posted': 'Nov 12, 2019'
     },
     {
@@ -48,7 +49,7 @@ posts = [
     {
         'author': 'Jay Mavin',
         'title': 'Specification 3',
-        'content': 'Making my first web application using Flask library.',
+        'content': 'Making my first web application using Flask library. This can be found in the Home page',
         'date_posted': 'Nov 10, 2019'
     },
 
@@ -66,12 +67,6 @@ posts = [
 def home():
     return render_template('home.html', posts=posts)
 
-
-@app.route("/about")
-def about():
-    return render_template('about.html', title='About')
-
-
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
@@ -85,12 +80,17 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        if form.email.data == 'admin@blog.com' and form.password.data == 'password':
+        if form.email.data == 'jaymavin123@gmail.com' and form.password.data == 'password':
             flash('You have been logged in!', 'success')
             return redirect(url_for('home'))
         else:
             flash('Login Unsuccessful. Please check your username and password', 'danger')
     return render_template('login.html', title='Login', form=form)
+
+
+@app.route("/spec-1")
+def spec1():
+    return render_template('spec-1.html', title='Specification-1')
 
 
 if __name__ == '__main__':
