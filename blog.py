@@ -91,22 +91,22 @@ def login():
 
 @app.route("/spec1")
 def spec1():
-    return render_template('spec-1.html', title='Specification 1')
+    return render_template('spec-1.html', title='Specification 1', href="/spec1")
 
 
 @app.route("/spec2")
 def spec2():
-    return render_template('spec-2.html', title='Specification 2')
+    return render_template('spec-2.html', title='Specification 2', href="/spec2")
 
 
 @app.route("/spec3")
 def spec3():
-    return render_template('spec-3.html', title='Specification 3')
+    return render_template('spec-3.html', title='Specification 3', href="/spec3")
 
 
 @app.route("/spec4")
 def spec4():
-    return render_template('spec-4.html', title='Specification 4')
+    return render_template('spec-4.html', title='Specification 4', href="/spec4")
 
 
 if __name__ == '__main__':
