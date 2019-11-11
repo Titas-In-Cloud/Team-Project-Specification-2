@@ -4,7 +4,7 @@ def image_storage(args):
     import image_storage
 
 def print_list_of_stored_pictures(args):
-    import print_list_of_stored_pictures
+    import list_of_stored_pictures
 
 def JPEG_thumbnail_creation(args):
     import thumbnail_creation
