@@ -23,4 +23,4 @@ def image_save(image, image_name):
             image.save(image_storage_location_path + "\\" + image_name)
 
         else:
-            print("Error! Wrong answer. Please choose 'Yes' or 'No'.")
+            print("Error! Wrong command. Please choose 'Yes' or 'No'.")

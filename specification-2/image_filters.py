@@ -37,12 +37,17 @@ command = "start the loop"
 
 for picture in os.listdir(storage_folder):
     image = Image.open(storage_folder + "\\" + picture)
+
     picture_with_last_modification_was_saved = True
-    # creates picture pixel map
-    pixel_map = image.load()
+    error = False
+
     print(picture + " was picked for modification.")
-    while command != "End":
-        command = input("What would you like to do? ")
+    while command != "End" or command != "end":
+        # creates picture pixel map
+        pixel_map = image.load()
+
+        if error == False:
+            command = input("What would you like to do? ")
 
         # prints a list with available commands
         if command == "Help" or command == "help":
@@ -51,7 +56,11 @@ for picture in os.listdir(storage_folder):
                   " * Blur - applies blur filter to the picture \n"
                   " * Contour - applies contour filter to the picture \n"
                   " * Emboss - applies emboss filter to the picture \n"
+                  " * Sharpen - applies sharpen filter to the picture \n"
+                  " * Detail - applies detail filter to the picture \n"
+                  " * Edges - applies edges filter to the picture \n"
                   " * Enhance - applies enhance filter to the picture \n"
+                  " * Smooth - applies smooth filter to the picture \n"
                   " * Greyscale - applies custom greyscale filter \n"
                   " * Dither - applies custom dithering filter \n"
                   " * Rotate - rotates the picture in inputed amount degrees \n"
@@ -78,16 +87,56 @@ for picture in os.listdir(storage_folder):
             image = image.filter(ImageFilter.EMBOSS)
             picture_with_last_modification_was_saved = False
 
-        # enhances pictures
+        # sharpens picture
+        elif command == "Sharpen" or command == "sharpen":
+            image = image.filter(ImageFilter.SHARPEN)
+            picture_with_last_modification_was_saved = False
+
+        # details picture
+        elif command == "Detail" or command == "detail":
+            image = image.filter(ImageFilter.DETAIL)
+            picture_with_last_modification_was_saved = False
+
+        # edges picture
+        elif command == "Edges" or command == "edges":
+            image = image.filter(ImageFilter.FIND_EDGES)
+            picture_with_last_modification_was_saved = False
+
+        # enhances picture
         elif command == "Enhance" or command == "enhance":
             edge_enhance_picture_answer = input("Do you want to enhance picture a lot? ")
             if edge_enhance_picture_answer == "Yes" or edge_enhance_picture_answer == "yes":
                 image = image.filter(ImageFilter.EDGE_ENHANCE_MORE)
                 picture_with_last_modification_was_saved = False
+                error = False
 
             elif edge_enhance_picture_answer == "No" or edge_enhance_picture_answer == "no":
                 image = image.filter(ImageFilter.EDGE_ENHANCE)
                 picture_with_last_modification_was_saved = False
+                error = False
+
+            else:
+                print("Error! Wrong command. Please choose 'Yes' or 'No'.")
+                command = "Enhance"
+                error = True
+
+        # smoothens picture
+        elif command == "Smooth" or command == "smooth":
+            edge_enhance_picture_answer = input("Do you want to smooth picture a lot? ")
+            if edge_enhance_picture_answer == "Yes" or edge_enhance_picture_answer == "yes":
+                image = image.filter(ImageFilter.SMOOTH_MORE)
+                picture_with_last_modification_was_saved = False
+                error = False
+
+            elif edge_enhance_picture_answer == "No" or edge_enhance_picture_answer == "no":
+                image = image.filter(ImageFilter.SMOOTH)
+                picture_with_last_modification_was_saved = False
+                error = False
+
+            else:
+                print("Error! Wrong command. Please choose 'Yes' or 'No'.")
+                command = "Smooth"
+                error = True
 
         # applies custom greyscale filter to the picture
         elif command == "Greyscale" or command == "greyscale":
@@ -106,7 +155,6 @@ for picture in os.listdir(storage_folder):
                     # get pixels one by one around one of the pixels
                     coordinate = i, j
                     pixel_1 = image.getpixel(coordinate)
-
                     if image.size[0] != i + 1:
                         coordinate = i + 1, j
                         pixel_2 = image.getpixel(coordinate)
@@ -157,9 +205,17 @@ for picture in os.listdir(storage_folder):
 
         # rotates the picture some amount of degrees
         elif command == "Rotate" or command == "rotate":
-            rotation_degrees = int(input("How much degrees you would like to rotate the picture? "))
-            image = image.rotate(rotation_degrees)
-            picture_with_last_modification_was_saved = False
+            rotation_degrees = input("How much degrees you would like to rotate the picture? ")
+            if rotation_degrees.isnumeric() == True:
+                rotation_degrees = int(rotation_degrees)
+                image = image.rotate(rotation_degrees)
+                picture_with_last_modification_was_saved = False
+                error = False
+
+            else:
+                print("Error! Wrong command. Please input a numeric value.")
+                command = "Rotate"
+                error = True
 
         # cancels all modifications done to the image
         elif command == "Cancel" or command == "cancel":
@@ -181,13 +237,15 @@ for picture in os.listdir(storage_folder):
                                           "with last adjustment? ")
 
                 if save_confirmation == "Yes" or save_confirmation == "yes":
+                    error = False
                     break
 
-                if save_confirmation == "No" or save_confirmation == "no":
+                elif save_confirmation == "No" or save_confirmation == "no":
                     # splits the file path into file name and the rest of the directory path
                     file_path, file_name = os.path.split(storage_folder + "\\" + picture)
                     # calls save function from image_save.py file
                     image_save.image_save(image, file_name)
+                    error = False
                     break
 
             else:
