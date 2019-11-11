@@ -33,8 +33,6 @@ def custom_filter_saturation(value, quadrant_value):
 
 print("Please input 'Help' to get a list of available filters and modifications. ")
 
-command = "start the loop"
-
 for picture in os.listdir(storage_folder):
     image = Image.open(storage_folder + "\\" + picture)
 
@@ -42,12 +40,15 @@ for picture in os.listdir(storage_folder):
     error = False
 
     print(picture + " was picked for modification.")
-    while command != "End" or command != "end":
+
+    command = "start the loop"
+
+    while command != "end the loop":
         # creates picture pixel map
         pixel_map = image.load()
 
         if error == False:
-            command = input("What would you like to do? ")
+            command = input("How would you like to modify the picture? ")
 
         # prints a list with available commands
         if command == "Help" or command == "help":
@@ -62,7 +63,7 @@ for picture in os.listdir(storage_folder):
                   " * Enhance - applies enhance filter to the picture \n"
                   " * Smooth - applies smooth filter to the picture \n"
                   " * Greyscale - applies custom greyscale filter \n"
-                  " * Dither - applies custom dithering filter \n"
+                  " * Fried - applies custom filter \n"
                   " * Rotate - rotates the picture in inputed amount degrees \n"
                   " * Cancel - cancels all filters applied to the picture \n"
                   " * Save - saves the picture \n"
@@ -116,7 +117,7 @@ for picture in os.listdir(storage_folder):
                 error = False
 
             else:
-                print("Error! Wrong command. Please choose 'Yes' or 'No'.")
+                print("Error! Please choose 'Yes' or 'No'.")
                 command = "Enhance"
                 error = True
 
@@ -134,7 +135,7 @@ for picture in os.listdir(storage_folder):
                 error = False
 
             else:
-                print("Error! Wrong command. Please choose 'Yes' or 'No'.")
+                print("Error! Please choose 'Yes' or 'No'.")
                 command = "Smooth"
                 error = True
 
@@ -149,7 +150,7 @@ for picture in os.listdir(storage_folder):
             picture_with_last_modification_was_saved = False
 
         # applies custom dithering filter to the picture
-        elif command == "Dither" or command == "dither":
+        elif command == "Fried" or command == "fried":
             for i in range(image.size[0]):
                 for j in range(image.size[1]):
                     # get pixels one by one around one of the pixels
@@ -213,7 +214,7 @@ for picture in os.listdir(storage_folder):
                 error = False
 
             else:
-                print("Error! Wrong command. Please input a numeric value.")
+                print("Error! Please input a numeric value.")
                 command = "Rotate"
                 error = True
 
@@ -238,7 +239,7 @@ for picture in os.listdir(storage_folder):
 
                 if save_confirmation == "Yes" or save_confirmation == "yes":
                     error = False
-                    break
+                    command = "end the loop"
 
                 elif save_confirmation == "No" or save_confirmation == "no":
                     # splits the file path into file name and the rest of the directory path
@@ -246,10 +247,14 @@ for picture in os.listdir(storage_folder):
                     # calls save function from image_save.py file
                     image_save.image_save(image, file_name)
                     error = False
-                    break
+                    command = "end the loop"
+
+                else:
+                    print("Error! Please choose 'Yes' or 'No'.")
+                    error = True
 
             else:
-                break
+                command = "end the loop"
 
         else:
             print("Error! Wrong command. Please input 'Help' to get a list of "

@@ -9,8 +9,9 @@ this includes blur, emboss, greyscale, enhance and a lot more.
 
 ## Installation
 This package runs on Python version 3.7 or above and needs additional Pillow 
-image manipulation module installed. To install the Pillow package please
-write the code specified below in ```Terminal```:
+image manipulation library installed (it is a fork of the Python Imaging Library 
+(PIL)). To install the Pillow module please write the code specified below in 
+```Terminal```:
 ```
  pipenv install pillow 
 ```
@@ -20,7 +21,14 @@ functionalities. Run code below in ```Terminal``` if you want to:
  1. Pick the pictures that needs to be modified - ```pipenv run python main.py storage```
  2. See the list of picked pictures - ```pipenv run python main.py list```
  3. Create JPEG thumbnails of chosen pictures - ```pipenv run python main.py thumbnail```
- 4. Start the modification process of the chosen pictures - ```pipenv run python main.py filters```
+ 4. Start the modification process of the chosen pictures - ```pipenv run python 
+ main.py filters```
+    * After you started the modification process, please input help for a list of 
+    available filters.
+    * Follow the instructions and messeages in the ```Terminal``` for each step 
+    during the modification process.
+ 5. Get a list with function names and their functionality - ```pipenv run python 
+ main.py --help```
 ## License
 This project is licensed under the MIT License - see the **LICENSE.md** file for
 details.

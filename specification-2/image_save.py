@@ -24,3 +24,4 @@ def image_save(image, image_name):
 
         else:
             print("Error! Wrong command. Please choose 'Yes' or 'No'.")
+            new_picture_name_question = input("Would you like to give a new name to the modified picture? ")
