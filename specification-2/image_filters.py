@@ -2,6 +2,8 @@ import os
 
 from PIL import Image
 from PIL import ImageFilter
+from PIL.ImageFilter import GaussianBlur
+from PIL.ImageFilter import UnsharpMask
 
 import image_save
 
@@ -32,9 +34,14 @@ def custom_filter_saturation(value, quadrant_value):
     else:
         return 0
 
+exit = False
+
 print("Please input 'Help' to get a list of available filters and modifications. ")
 
 for picture in os.listdir(storage_folder):
+    if exit == True:
+        break
+
     image = Image.open(storage_folder + "\\" + picture)
 
     image_size = os.path.getsize(storage_folder + "\\" + picture)
@@ -71,7 +78,8 @@ for picture in os.listdir(storage_folder):
                   " * Rotate - rotates the picture in inputed amount degrees \n"
                   " * Cancel - cancels all filters applied to the picture \n"
                   " * Save - saves the picture \n"
-                  " * End - ends modification process")
+                  " * End - ends picture modification process \n"
+                  " * Exit - exits filter program" )
 
         # shows modified picture
         elif command == "Show" or command == "show":
@@ -79,8 +87,30 @@ for picture in os.listdir(storage_folder):
 
         # blurs picture
         elif command == "Blur" or command == "blur":
-            image = image.filter(ImageFilter.BLUR)
-            picture_with_last_modification_was_saved = False
+            blur_picture_answer = input("Do you want to make very blurred picture? ")
+            if blur_picture_answer == "Yes" or blur_picture_answer == "yes":
+                print("How much would you like to blur the image?")
+                blur_radius_value = input("Choose a numeric value (bigger "
+                                          "number = bigger blur effect): ")
+
+                while blur_radius_value.isnumeric() == False:
+                    print("Error! Please input numeric value.")
+                    blur_radius_value = input("Choose a numeric value (bigger "
+                                              "number = bigger blur effect): ")
+
+                blur_radius_value = int(blur_radius_value)
+                image = image.filter(GaussianBlur(radius = blur_radius_value))
+                picture_with_last_modification_was_saved = False
+                error = False
+
+            elif blur_picture_answer == "No" or blur_picture_answer == "no":
+                image = image.filter(ImageFilter.BLUR)
+                picture_with_last_modification_was_saved = False
+                error = False
+
+            else:
+                print("Error! Please choose 'Yes' or 'No'.")
+                error = True
 
         # contours picture
         elif command == "Contour" or command == "contour":
@@ -94,8 +124,48 @@ for picture in os.listdir(storage_folder):
 
         # sharpens picture
         elif command == "Sharpen" or command == "sharpen":
-            image = image.filter(ImageFilter.SHARPEN)
-            picture_with_last_modification_was_saved = False
+            sharp_picture_answer = input("Would you like to modify the sharpening aspects? ")
+            if sharp_picture_answer == "Yes" or sharp_picture_answer == "yes":
+                print("How detailed you would like to make the picture?")
+                sharpen_radius_value = input("Input a numeric value(smaller "
+                                             "number = more detailed picture): ")
+
+                while sharpen_radius_value.isnumeric() == False:
+                    sharpen_radius_value = input("Error! Please input a numeric value: ")
+
+                print("How much contrast you would like to add to the picture edges?")
+                sharpen_percentage_value = input("Input a numeric value(counted "
+                                                 "in percentage, bigger percentage = "
+                                                 "more contrast): ")
+
+                while sharpen_percentage_value.isnumeric() == False:
+                    sharpen_percentage_value = input("Error! Please input a numeric value: ")
+
+                print("How much you would like to sharpen pronounced edges?")
+                sharpen_threshold_value = input("Input a numeric value(smaller "
+                                                "number = more sharp edges): ")
+
+                while sharpen_threshold_value.isnumeric() == False:
+                    sharpen_threshold_value = input("Error! Please input a numeric value: ")
+
+                sharpen_radius_value = int(sharpen_radius_value)
+                sharpen_percentage_value = int(sharpen_percentage_value)
+                sharpen_threshold_value = int(sharpen_threshold_value)
+                image = image.filter(UnsharpMask(radius = sharpen_radius_value,
+                                                 percent = sharpen_percentage_value,
+                                                 threshold = sharpen_threshold_value))
+                picture_with_last_modification_was_saved = False
+                error = False
+
+            elif sharp_picture_answer == "No" or sharp_picture_answer == "no":
+                image = image.filter(ImageFilter.SHARPEN)
+                picture_with_last_modification_was_saved = False
+                error = False
+
+            else:
+                print("Error! Please choose 'Yes' or 'No'.")
+                error = True
+
 
         # details picture
         elif command == "Detail" or command == "detail":
@@ -109,7 +179,7 @@ for picture in os.listdir(storage_folder):
 
         # enhances picture
         elif command == "Enhance" or command == "enhance":
-            edge_enhance_picture_answer = input("Do you want to make very enhance picture? ")
+            edge_enhance_picture_answer = input("Do you want to make very enhanced picture? ")
             if edge_enhance_picture_answer == "Yes" or edge_enhance_picture_answer == "yes":
                 image = image.filter(ImageFilter.EDGE_ENHANCE_MORE)
                 picture_with_last_modification_was_saved = False
@@ -122,25 +192,23 @@ for picture in os.listdir(storage_folder):
 
             else:
                 print("Error! Please choose 'Yes' or 'No'.")
-                command = "Enhance"
                 error = True
 
         # smoothens picture
         elif command == "Smooth" or command == "smooth":
-            edge_enhance_picture_answer = input("Do you want to make very smooth picture? ")
-            if edge_enhance_picture_answer == "Yes" or edge_enhance_picture_answer == "yes":
+            smooth_picture_answer = input("Do you want to make very smooth picture? ")
+            if smooth_picture_answer == "Yes" or smooth_picture_answer == "yes":
                 image = image.filter(ImageFilter.SMOOTH_MORE)
                 picture_with_last_modification_was_saved = False
                 error = False
 
-            elif edge_enhance_picture_answer == "No" or edge_enhance_picture_answer == "no":
+            elif smooth_picture_answer == "No" or smooth_picture_answer == "no":
                 image = image.filter(ImageFilter.SMOOTH)
                 picture_with_last_modification_was_saved = False
                 error = False
 
             else:
                 print("Error! Please choose 'Yes' or 'No'.")
-                command = "Smooth"
                 error = True
 
         # applies custom greyscale filter to the picture
@@ -247,7 +315,6 @@ for picture in os.listdir(storage_folder):
 
             else:
                 print("Error! Please input a numeric value.")
-                command = "Rotate"
                 error = True
 
         # cancels all modifications done to the image
@@ -287,6 +354,10 @@ for picture in os.listdir(storage_folder):
 
             else:
                 command = "end the loop"
+
+        elif command == "Exit" or command == "exit":
+            exit = True
+            break
 
         else:
             print("Error! Wrong command. Please input 'Help' to get a list of "
