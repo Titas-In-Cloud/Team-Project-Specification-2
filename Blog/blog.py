@@ -1,12 +1,13 @@
 from flask import Flask, render_template, url_for, flash, redirect
 from flask_sqlalchemy import SQLAlchemy
-from forms import RegistrationForm, LoginForm
+from Blog.forms import RegistrationForm, LoginForm
 from datetime import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'c5bbd3bef1e17016c3c5327b7814eb2e'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 db = SQLAlchemy(app)
+
 
 # User database #
 class User(db.Model):
@@ -20,6 +21,7 @@ class User(db.Model):
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}'"
 
+
 # Post database #
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -30,6 +32,7 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+
 
 # Adding posts #
 posts = [
@@ -68,6 +71,7 @@ posts = [
 def home():
     return render_template('home.html', posts=posts)
 
+
 # Register page route #
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -76,6 +80,7 @@ def register():
         flash(f'Account created for {form.username.data}!', 'success')
         return redirect(url_for('home'))
     return render_template('register.html', title='Register', form=form)
+
 
 # Login page route #
 @app.route("/login", methods=['GET', 'POST'])
@@ -89,25 +94,30 @@ def login():
             flash('Login Unsuccessful. Please check your username and password', 'danger')
     return render_template('login.html', title='Login', form=form)
 
+
 # Specification 1 page route #
 @app.route("/spec1")
 def spec1():
-    return render_template('spec-1.html', title='Specification 1', href="/spec1")
+    return render_template('spec-1.html', title='Specification 1')
+
 
 # Specification 2 page route #
 @app.route("/spec2")
 def spec2():
-    return render_template('spec-2.html', title='Specification 2', href="/spec2")
+    return render_template('spec-2.html', title='Specification 2')
+
 
 # Specification 3 page route #
 @app.route("/spec3")
 def spec3():
-    return render_template('spec-3.html', title='Specification 3', href="/spec3")
+    return render_template('spec-3.html', title='Specification 3')
+
 
 # Specification 4 page route #
 @app.route("/spec4")
 def spec4():
-    return render_template('spec-4.html', title='Specification 4', href="/spec4")
+    return render_template('spec-4.html', title='Specification 4')
+
 
 # Running web page and activating debugger #
 if __name__ == '__main__':
