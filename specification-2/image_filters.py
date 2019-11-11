@@ -10,6 +10,17 @@ import image_save
 # folder path where the pictures are temporarily stored for modification
 storage_folder = ".\picture_storage_folder"
 
+"""
+Saturation filter which changes RGB values
+
+Parameters:
+value (int): RGB value of the picture
+quadrant_value (int): picture pixel value
+
+Returns:
+int: new modified RGB value of the picture
+
+"""
 def custom_filter_saturation(value, quadrant_value):
     if value > 223:
         return 255
@@ -34,6 +45,10 @@ def custom_filter_saturation(value, quadrant_value):
     else:
         return 0
 
+
+""" Filter loop function which runs the picture's modification process"""
+
+# if exit = False - the program will run, if exit = True - program wil stop
 exit = False
 
 print("Please input 'Help' to get a list of available filters and modifications. ")
@@ -44,19 +59,27 @@ for picture in os.listdir(storage_folder):
 
     image = Image.open(storage_folder + "\\" + picture)
 
+    # gets picture's size in bytes
     image_size = os.path.getsize(storage_folder + "\\" + picture)
 
+    # variable used to determine if the picture was saved after the last modification
     picture_with_last_modification_was_saved = True
+
+    # variable used to determine if input was right (False = Yes, True = No)
     error = False
 
     print(picture + " was picked for modification.")
 
+    # command - the action that the user wants to execute
     command = "start the loop"
 
     while command != "end the loop":
-        # creates picture pixel map
+        # creates picture's pixel map
         pixel_map = image.load()
 
+        # answer to one of the questions in the function was wrong so the command
+        # input will be skipped and the loop will continue until the answer
+        # will get right
         if error == False:
             command = input("How would you like to modify the picture? ")
 
@@ -81,21 +104,24 @@ for picture in os.listdir(storage_folder):
                   " * End - ends current picture's modification process \n"
                   " * Exit - exits filter program")
 
-        # shows modified picture
+        # shows the modified picture
         elif command == "Show" or command == "show":
             image.show()
 
-        # blurs picture
+        # blurs the picture
         elif command == "Blur" or command == "blur":
-            blur_picture_answer = input("Do you want to make very blurred picture? ")
+            blur_picture_answer = input(" * Do you want to make very blurred picture? ")
+
+            # applies Gaussian Blur filter to the picture
             if blur_picture_answer == "Yes" or blur_picture_answer == "yes":
-                print("How much would you like to blur the image?")
-                blur_radius_value = input("Choose a numeric value (bigger "
+                print("- How much would you like to blur the image?")
+                blur_radius_value = input(" * Choose a numeric value (bigger "
                                           "number = bigger blur effect): ")
 
+                # loop will run until the user will input numeric value
                 while blur_radius_value.isnumeric() == False:
-                    print("Error! Please input numeric value.")
-                    blur_radius_value = input("Choose a numeric value (bigger "
+                    print("- Error! Please input numeric value.")
+                    blur_radius_value = input(" * Choose a numeric value (bigger "
                                               "number = bigger blur effect): ")
 
                 blur_radius_value = int(blur_radius_value)
@@ -103,131 +129,150 @@ for picture in os.listdir(storage_folder):
                 picture_with_last_modification_was_saved = False
                 error = False
 
+            # applies simple Blur filter to the picture
             elif blur_picture_answer == "No" or blur_picture_answer == "no":
                 image = image.filter(ImageFilter.BLUR)
                 picture_with_last_modification_was_saved = False
                 error = False
 
             else:
-                print("Error! Please choose 'Yes' or 'No'.")
+                print("- Error! Please choose 'Yes' or 'No'.")
                 error = True
 
-        # contours picture
+        # applies Contour filter to the image
         elif command == "Contour" or command == "contour":
             image = image.filter(ImageFilter.CONTOUR)
             picture_with_last_modification_was_saved = False
 
-        # emboss picture
+        # applies Emboss filter to the image
         elif command == "Emboss" or command == "emboss":
             image = image.filter(ImageFilter.EMBOSS)
             picture_with_last_modification_was_saved = False
 
-        # sharpens picture
+        # sharpens the picture
         elif command == "Sharpen" or command == "sharpen":
-            sharp_picture_answer = input("Would you like to modify the sharpening aspects? ")
+            sharp_picture_answer = input(" * Would you like to modify the sharpening aspects? ")
+
+            # applies Unsharp Mask filter to the image
             if sharp_picture_answer == "Yes" or sharp_picture_answer == "yes":
-                print("How detailed you would like to make the picture?")
-                sharpen_radius_value = input("Input a numeric value(smaller "
+                print("- How detailed you would like to make the picture?")
+                sharpen_radius_value = input(" * Input a numeric value (smaller "
                                              "number = more detailed picture): ")
 
+                # loop will run until the user will input numeric value
                 while sharpen_radius_value.isnumeric() == False:
-                    sharpen_radius_value = input("Error! Please input a numeric value: ")
+                    sharpen_radius_value = input(" * Error! Please input a numeric value: ")
 
-                print("How much contrast you would like to add to the picture edges?")
-                sharpen_percentage_value = input("Input a numeric value(counted "
+                print("- How much contrast you would like to add to the picture edges?")
+                sharpen_percentage_value = input(" * Input a numeric value (counted "
                                                  "in percentage, bigger percentage = "
                                                  "more contrast): ")
 
+                # loop will run until the user will input numeric value
                 while sharpen_percentage_value.isnumeric() == False:
-                    sharpen_percentage_value = input("Error! Please input a numeric value: ")
+                    sharpen_percentage_value = input(" * Error! Please input a numeric value: ")
 
-                print("How much you would like to sharpen pronounced edges?")
-                sharpen_threshold_value = input("Input a numeric value(smaller "
+                print("- How much you would like to sharpen pronounced edges?")
+                sharpen_threshold_value = input(" * Input a numeric value (smaller "
                                                 "number = more sharp edges): ")
 
+                # loop will run until the user will input numeric value
                 while sharpen_threshold_value.isnumeric() == False:
-                    sharpen_threshold_value = input("Error! Please input a numeric value: ")
+                    sharpen_threshold_value = input(" * Error! Please input a numeric value: ")
 
+                # converts numeric string values to numeric values
                 sharpen_radius_value = int(sharpen_radius_value)
                 sharpen_percentage_value = int(sharpen_percentage_value)
                 sharpen_threshold_value = int(sharpen_threshold_value)
+
                 image = image.filter(UnsharpMask(radius = sharpen_radius_value,
                                                  percent = sharpen_percentage_value,
                                                  threshold = sharpen_threshold_value))
+
                 picture_with_last_modification_was_saved = False
                 error = False
 
+            # applies simple Sharpen filter to the image
             elif sharp_picture_answer == "No" or sharp_picture_answer == "no":
                 image = image.filter(ImageFilter.SHARPEN)
                 picture_with_last_modification_was_saved = False
                 error = False
 
             else:
-                print("Error! Please choose 'Yes' or 'No'.")
+                print("- Error! Please choose 'Yes' or 'No'.")
                 error = True
 
-
-        # details picture
+        # applies Detail filter to the image
         elif command == "Detail" or command == "detail":
             image = image.filter(ImageFilter.DETAIL)
             picture_with_last_modification_was_saved = False
 
-        # edges picture
+        # applies Find Edges filter to the image
         elif command == "Edges" or command == "edges":
             image = image.filter(ImageFilter.FIND_EDGES)
             picture_with_last_modification_was_saved = False
 
-        # enhances picture
+        # enhances the picture
         elif command == "Enhance" or command == "enhance":
-            edge_enhance_picture_answer = input("Do you want to make very enhanced picture? ")
+            edge_enhance_picture_answer = input(" * Do you want to make very enhanced picture? ")
+
+            # applies Edge Enhance More filter to the image
             if edge_enhance_picture_answer == "Yes" or edge_enhance_picture_answer == "yes":
                 image = image.filter(ImageFilter.EDGE_ENHANCE_MORE)
                 picture_with_last_modification_was_saved = False
                 error = False
 
+            # applies Edge Enhance filter to the image
             elif edge_enhance_picture_answer == "No" or edge_enhance_picture_answer == "no":
                 image = image.filter(ImageFilter.EDGE_ENHANCE)
                 picture_with_last_modification_was_saved = False
                 error = False
 
             else:
-                print("Error! Please choose 'Yes' or 'No'.")
+                print("- Error! Please choose 'Yes' or 'No'.")
                 error = True
 
         # smoothens picture
         elif command == "Smooth" or command == "smooth":
-            smooth_picture_answer = input("Do you want to make very smooth picture? ")
+            smooth_picture_answer = input(" * Do you want to make very smooth picture? ")
+
+            # applies Smooth More filter to the image
             if smooth_picture_answer == "Yes" or smooth_picture_answer == "yes":
                 image = image.filter(ImageFilter.SMOOTH_MORE)
                 picture_with_last_modification_was_saved = False
                 error = False
 
+            # applies Smooth filter to the image
             elif smooth_picture_answer == "No" or smooth_picture_answer == "no":
                 image = image.filter(ImageFilter.SMOOTH)
                 picture_with_last_modification_was_saved = False
                 error = False
 
             else:
-                print("Error! Please choose 'Yes' or 'No'.")
+                print("- Error! Please choose 'Yes' or 'No'.")
                 error = True
 
-        # applies custom greyscale filter to the picture
+        # applies custom Greyscale filter to the picture
         elif command == "Grayscale" or command == "grayscale":
             for i in range(image.size[0]):
                 for j in range(image.size[1]):
+                    # extracts RGB values from the pixel
                     red, green, blue = pixel_map[i, j]
+
+                    # modifies RGB values into different shades of grey
                     pixel_brightness = int(round(0.299 * red + 0.587 * green + 0.114 * blue))
                     pixel_map[i, j] = (pixel_brightness, pixel_brightness, pixel_brightness)
 
             picture_with_last_modification_was_saved = False
 
-        # applies custom retro filter to the picture
+        # applies custom Retro filter to the picture
         elif command == "Retro" or command == "retro":
             for i in range(image.size[0]):
                 if i % 2 == 0:
                     for j in range(image.size[1]):
                         if j % 2 == 0:
                             coordinate = i, j
+                            # extracts RGB values from the pixel
                             pixel = image.getpixel(coordinate)
 
                             # unpacks the pixel tuple
@@ -250,13 +295,16 @@ for picture in os.listdir(storage_folder):
         # applies custom filter to the picture
         elif command == "Fried" or command == "fried":
             if image_size > 300000:
-                print("Please, be patient, filter application to the bigger "
-                      "file can take some time.")
+                print("- Please, be patient, filter application to the bigger "
+                      "file can take some time. -")
+
             for i in range(image.size[0]):
                 for j in range(image.size[1]):
-                    # get pixels one by one around one of the pixels
                     coordinate = i, j
+
+                    # extracts RGB values from the pixel and 3 pixels around it
                     pixel_1 = image.getpixel(coordinate)
+
                     if image.size[0] != i + 1:
                         coordinate = i + 1, j
                         pixel_2 = image.getpixel(coordinate)
@@ -306,15 +354,19 @@ for picture in os.listdir(storage_folder):
 
         # rotates the picture some amount of degrees
         elif command == "Rotate" or command == "rotate":
-            rotation_degrees = input("How much degrees you would like to rotate the picture? ")
+            rotation_degrees = input(" * How much degrees you would like to rotate the picture? ")
+
+            # if inputted degrees value is numeric it will rotate the picture
             if rotation_degrees.isnumeric() == True:
+                # converts numeric string value to numeric value
                 rotation_degrees = int(rotation_degrees)
+
                 image = image.rotate(rotation_degrees)
                 picture_with_last_modification_was_saved = False
                 error = False
 
             else:
-                print("Error! Please input a numeric value.")
+                print("- Error! Please input a numeric value.")
                 error = True
 
         # cancels all modifications done to the image
@@ -322,24 +374,32 @@ for picture in os.listdir(storage_folder):
             image = Image.open(storage_folder + "\\" + picture)
             picture_with_last_modification_was_saved = True
 
-        # saves modified picture
+        # saves the modified picture
         elif command == "Save" or command == "save":
             # splits the file path into file name and the rest of the directory path
             file_path, file_name = os.path.split(storage_folder + "\\" + picture)
+
             # calls save function from image_save.py file
             image_save.image_save(image, file_name)
+
             picture_with_last_modification_was_saved = True
 
+        # ends picture's modification progress with or without saving the modified picture
+        # if picture was modified it will ask if user wants to save it, if not the
+        # current picture's modification process will stop
         elif command == "End" or command == "end":
             if picture_with_last_modification_was_saved == False:
-                save_confirmation = input("Do you want to end modification "
+                save_confirmation = input(" * Do you want to end modification "
                                           "process without saving the picture "
                                           "with last adjustment? ")
 
+                # ends current picture's modification process without saving
+                # modified picture
                 if save_confirmation == "Yes" or save_confirmation == "yes":
                     error = False
                     command = "end the loop"
 
+                # calls save function and saves modified picture
                 elif save_confirmation == "No" or save_confirmation == "no":
                     # splits the file path into file name and the rest of the directory path
                     file_path, file_name = os.path.split(storage_folder + "\\" + picture)
@@ -349,16 +409,18 @@ for picture in os.listdir(storage_folder):
                     command = "end the loop"
 
                 else:
-                    print("Error! Please choose 'Yes' or 'No'.")
+                    print("- Error! Please choose 'Yes' or 'No'.")
                     error = True
 
             else:
                 command = "end the loop"
 
+        # exits the images filter program (ends both loops)
         elif command == "Exit" or command == "exit":
             exit = True
             break
 
+        # returns error if inputted command value is incorrect
         else:
-            print("Error! Wrong command. Please input 'Help' to get a list of "
+            print("- Error! Wrong command. Please input 'Help' to get a list of "
                   "available filters and modifications.")

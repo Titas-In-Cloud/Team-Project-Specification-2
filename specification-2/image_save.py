@@ -1,6 +1,14 @@
 import os
 from PIL import Image
 
+""" 
+Saves the image when the function is called
+
+Parameters:
+image (file): image file opened with Pillow library
+image_name (string): image file name
+    
+"""
 def image_save(image, image_name):
     image_storage_location_path = \
         input("Where would you like to save the modified picture? ")
@@ -9,18 +17,21 @@ def image_save(image, image_name):
     if os.path.isdir(image_storage_location_path) == False:
         os.mkdir(image_storage_location_path)
 
-    loop_operation_variable = "run"
+
     new_picture_name_question = input("Would you like to give a new name to the modified picture? ")
 
-    while loop_operation_variable == "run":
+    # variable used to determine if input was right (False = Yes, True = No)
+    error = True
+
+    while error == True:
         if new_picture_name_question == "Yes" or new_picture_name_question == "yes":
-            loop_operation_variable = "stop"
             new_name = input("Please write new name here: ")
             image.save(image_storage_location_path + "\\" + new_name + ".jpeg")
+            error = False
 
         elif new_picture_name_question == "No" or new_picture_name_question == 'no':
-            loop_operation_variable = "stop"
             image.save(image_storage_location_path + "\\" + image_name)
+            error = False
 
         else:
             print("Error! Wrong command. Please choose 'Yes' or 'No'.")

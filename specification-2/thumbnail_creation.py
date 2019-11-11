@@ -22,9 +22,11 @@ for picture in os.listdir(storage_folder):
     # splits the file path into file name and the rest of the directory path
     image_name, image_extension = os.path.splitext(picture)
     image = Image.open(storage_folder + "\\" + picture)
+
     # converts picture to chosen size thumbnail
     image.thumbnail(thumbnail_size)
     image_extension = ".jpeg"
+
     # saves created thumbnail to chosen directory
     image.save(thumbnail_storage_location_path + "\\" + "SIZE" + thumbnail_dimensions \
                + "_" + image_name + "_THUMBNAIL" + image_extension)
