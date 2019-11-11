@@ -27,7 +27,9 @@ pygame.init()
 
 
 class Player(pygame.sprite.Sprite):
+    """Sets up player, based on preexisting pygame sprite class"""
     def __init__(self):
+        """Sets up player object"""
         super(Player, self).__init__()  # Allows class to inherit from pygame sprite class
         self.surf = pygame.image.load("./practical-3/specification-4/resources/playerShip2_blue.png")  # Load the image
         self.surf.set_colorkey((0, 0, 0), RLEACCEL)  # Allows image to blend in with the background and makes it faster
@@ -39,6 +41,7 @@ class Player(pygame.sprite.Sprite):
         self.speed_y = 0
 
     def update(self, pressed_keys):
+        """Updates player object every frame, gets input from keyboard clicks"""
         # Player can move when pressing keys
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
@@ -66,6 +69,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.bottom = screen_height
 
     def shoot(self):
+        """Adds bullet sprite"""
         shoot_sound.play()
         bullet = Bullet(self.rect.centerx, self.rect.top)  # Sets starting location of a bullet
         # Add bullet to all the needed groups
@@ -74,7 +78,9 @@ class Player(pygame.sprite.Sprite):
 
 
 class Bullet(pygame.sprite.Sprite):
+    """Sets up bullet class, based on preexisting pygame sprite class"""
     def __init__(self, x, y):
+        """Sets up bullet objects, takes input for starting location"""
         super(Bullet, self).__init__()  # Allows class to inherit from pygame sprite class
         self.surf = pygame.image.load("./practical-3/specification-4/resources/laserBlue02.png")  # Load the image
         self.surf.set_colorkey((0, 0, 0), RLEACCEL)  # Allows image to blend in with the background and makes it faster
@@ -86,6 +92,7 @@ class Bullet(pygame.sprite.Sprite):
         self.speed_y = -10
 
     def update(self, pressed_keys):
+        """Updates bullet object every frame, takes input from keyboard"""
         # Moves bullet every frame, and stops processing it if it gets out of screen
         self.rect.move_ip(0, self.speed_y)
         if self.rect.bottom < 0:
@@ -93,7 +100,9 @@ class Bullet(pygame.sprite.Sprite):
 
 
 class Meteor(pygame.sprite.Sprite):
+    """Sets up meteor class, based on preexisting pygame sprite class"""
     def __init__(self):
+        """Sets up meteor objects"""
         super(Meteor, self).__init__()  # Allows class to inherit from pygame sprite class
         self.surf = pygame.image.load("./practical-3/specification-4/resources/meteorBrown_big1.png")  # Load the image
         self.surf.set_colorkey((0, 0, 0), RLEACCEL)  # Allows image to blend in with the background and makes it faster
@@ -111,6 +120,7 @@ class Meteor(pygame.sprite.Sprite):
         self.speed_x = random.randint(-3, 3)
 
     def update(self):
+        """Updates meteor object every frame"""
         # Moves bullet every frame, and stops processing it if it gets out of screen
         self.rect.move_ip(self.speed_x, self.speed_y)
         if (self.rect.top > screen_height + 30 or self.rect.left >
@@ -119,7 +129,9 @@ class Meteor(pygame.sprite.Sprite):
 
 
 class Enemy(pygame.sprite.Sprite):
+    """Sets up enemy class, based on preexisting pygame sprite class"""
     def __init__(self):
+        """Sets up enemy objects"""
         super(Enemy, self).__init__()  # Allows class to inherit from pygame sprite class
         self.surf = pygame.image.load("./practical-3/specification-4/resources/enemyRed1.png")  # Load the image
         self.surf.set_colorkey((0, 0, 0), RLEACCEL)  # Allows image to blend in with the background and makes it faster
@@ -135,6 +147,7 @@ class Enemy(pygame.sprite.Sprite):
         self.speed_y = random.randint(3, 5)
 
     def update(self):
+        """Updates enemy object every frame"""
         # Moves enemy every frame, and stops processing it if it gets out of screen
         self.rect.move_ip(self.speed_x, self.speed_y)
         if (self.rect.top > screen_height + 30 or self.rect.right >
@@ -149,6 +162,7 @@ class Enemy(pygame.sprite.Sprite):
 
 
 class EnemyBullet(pygame.sprite.Sprite):
+    """Sets up enemy bullet class, based on preexisting pygame sprite class"""
     def __init__(self, x, y):
         super(EnemyBullet, self).__init__()  # Allows class to inherit from pygame sprite class
         self.surf = pygame.image.load("./practical-3/specification-4/resources/laserRed02.png")  # Load the image
@@ -162,6 +176,7 @@ class EnemyBullet(pygame.sprite.Sprite):
 
 
     def update(self):
+        """Updates enemy bullet object every frame"""
         # Moves bullet every frame, and stops processing it if it gets out of screen
         self.rect.move_ip(0, self.speed_y)
         if self.rect.top > screen_height:
@@ -173,6 +188,7 @@ Arial = pygame.font.match_font('arial')
 
 # This function draws given string on a screen
 def draw_text(surf, text, size, x, y):
+    """Draws text given string, size and location"""
     font_size = pygame.font.Font(Arial, size)
     text_surface = font_size.render(text, True, (255, 255, 255))
     text_rect = text_surface.get_rect()  # Gets rectangles posistion
