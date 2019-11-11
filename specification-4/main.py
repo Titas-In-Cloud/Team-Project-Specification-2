@@ -23,14 +23,14 @@ collision_sound = pygame.mixer.Sound("./practical-3/specification-4/resources/za
 shoot_sound = pygame.mixer.Sound("./practical-3/specification-4/resources/laser4.ogg")
 pygame.init()
 
-#Setting up classes
+# Setting up classes
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
-        super(Player, self).__init__()
-        self.surf = pygame.image.load("./practical-3/specification-4/resources/playerShip2_blue.png")
-        self.surf.set_colorkey((0, 0, 0), RLEACCEL)
+        super(Player, self).__init__()  # Allows class to inherit from pygame sprite class
+        self.surf = pygame.image.load("./practical-3/specification-4/resources/playerShip2_blue.png")  # Load the image
+        self.surf.set_colorkey((0, 0, 0), RLEACCEL)  # Allows image to blend in with the background and makes it faster
         self.rect = self.surf.get_rect()
         self.radius = 18
         self.rect.centerx = screen_width / 2
@@ -39,21 +39,23 @@ class Player(pygame.sprite.Sprite):
         self.speed_y = 0
 
     def update(self, pressed_keys):
+        # Player can move when pressing keys
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
+        # Sets starting speed to zero
         self.speed_x = 0
         self.speed_y = 0
         if pressed_keys[K_UP]:
             self.speed_y = -5
-            move_up_sound.play()
+            move_up_sound.play()  # Play sound when moving
         if pressed_keys[K_DOWN]:
             self.speed_y = 6
-            move_down_sound.play()
+            move_down_sound.play()  # Play sound when moving
         if pressed_keys[K_LEFT]:
             self.speed_x = -8
         if pressed_keys[K_RIGHT]:
             self.speed_x = 8
-
+        # Stops player from moving out of the screen
         if self.rect.left < 0:
             self.rect.left = 0
         if self.rect.right > screen_width:
@@ -65,105 +67,117 @@ class Player(pygame.sprite.Sprite):
 
     def shoot(self):
         shoot_sound.play()
-        bullet = Bullet(self.rect.centerx, self.rect.top)
+        bullet = Bullet(self.rect.centerx, self.rect.top)  # Sets starting location of a bullet
+        # Add bullet to all the needed groups
         all_sprites.add(bullet)
         bullets.add(bullet)
 
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y):
-        super(Bullet, self).__init__()
-        self.surf = pygame.image.load("./practical-3/specification-4/resources/laserBlue02.png")
-        self.surf.set_colorkey((0, 0, 0), RLEACCEL)
+        super(Bullet, self).__init__()  # Allows class to inherit from pygame sprite class
+        self.surf = pygame.image.load("./practical-3/specification-4/resources/laserBlue02.png")  # Load the image
+        self.surf.set_colorkey((0, 0, 0), RLEACCEL)  # Allows image to blend in with the background and makes it faster
         self.rect = self.surf.get_rect()
+        # Part of a code allowing bullet to spawn at the top of the player sprite
         self.rect.bottom = y
         self.rect.centerx = x
+        # Sets speed
         self.speed_y = -10
 
     def update(self, pressed_keys):
-        self.rect.move_ip(0, -10)
+        # Moves bullet every frame, and stops processing it if it gets out of screen
+        self.rect.move_ip(0, self.speed_y)
         if self.rect.bottom < 0:
             self.kill()
 
 
 class Meteor(pygame.sprite.Sprite):
     def __init__(self):
-        super(Meteor, self).__init__()
-        self.surf = pygame.image.load("./practical-3/specification-4/resources/meteorBrown_big1.png")
-        self.surf.set_colorkey((0, 0, 0), RLEACCEL)
+        super(Meteor, self).__init__()  # Allows class to inherit from pygame sprite class
+        self.surf = pygame.image.load("./practical-3/specification-4/resources/meteorBrown_big1.png")  # Load the image
+        self.surf.set_colorkey((0, 0, 0), RLEACCEL)  # Allows image to blend in with the background and makes it faster
+        # Set the starting random positions
         self.rect = self.surf.get_rect(
             center=(
                 random.randint(150, screen_width - 150),
                 random.randint(-150, -75),
             )
         )
+        #  Collision detection
         self.radius = 65
+        #  Moving speed
         self.speed_y = random.randint(2, 10)
         self.speed_x = random.randint(-3, 3)
 
     def update(self):
+        # Moves bullet every frame, and stops processing it if it gets out of screen
         self.rect.move_ip(self.speed_x, self.speed_y)
         if (self.rect.top > screen_height + 30 or self.rect.left >
-            screen_width + 30 or self.rect.right < -30):
+                screen_width + 30 or self.rect.right < -30):
             self.kill()
-
-
 
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
-        super(Enemy, self).__init__()
-        self.surf = pygame.image.load("./practical-3/specification-4/resources/enemyRed1.png")
-        self.surf.set_colorkey((0, 0, 0), RLEACCEL)
+        super(Enemy, self).__init__()  # Allows class to inherit from pygame sprite class
+        self.surf = pygame.image.load("./practical-3/specification-4/resources/enemyRed1.png")  # Load the image
+        self.surf.set_colorkey((0, 0, 0), RLEACCEL)  # Allows image to blend in with the background and makes it faster
+        # Set the starting random positions
         self.rect = self.surf.get_rect(
-            center = (random.randint(150, screen_width - 150),
-                random.randint(-50, -15),))
+            center=(random.randint(150, screen_width - 150),
+                    random.randint(-50, -15),))
+        #  Collision detection
         self.radius = 18
+        #  Moving speed part
         r = random.choice([(-6, -5), (5, 6)])
         self.speed_x = random.randint(*r)
         self.speed_y = random.randint(3, 5)
 
     def update(self):
+        # Moves enemy every frame, and stops processing it if it gets out of screen
         self.rect.move_ip(self.speed_x, self.speed_y)
         if (self.rect.top > screen_height + 30 or self.rect.right >
                 screen_width + 30 or self.rect.left < -30):
             self.kill()
         else:
+            #  Shoot every frame
             shoot_sound.play()
             enemybullet = EnemyBullet(self.rect.centerx, self.rect.bottom)
             all_sprites.add(enemybullet)
             enemybullets.add(enemybullet)
 
 
-
-
 class EnemyBullet(pygame.sprite.Sprite):
     def __init__(self, x, y):
-        super(EnemyBullet, self).__init__()
-        self.surf = pygame.image.load("./practical-3/specification-4/resources/laserBlue02.png")
-        self.surf.set_colorkey((0, 0, 0), RLEACCEL)
+        super(EnemyBullet, self).__init__()  # Allows class to inherit from pygame sprite class
+        self.surf = pygame.image.load("./practical-3/specification-4/resources/laserRed02.png")  # Load the image
+        self.surf.set_colorkey((0, 0, 0), RLEACCEL)  # Allows image to blend in with the background and makes it faster
         self.rect = self.surf.get_rect()
+        # Starting location at the bottom of the enemy sprite
         self.rect.bottom = y
         self.rect.centerx = x
+        # Speed
         self.speed_y = 5
 
+
     def update(self):
-        self.rect.y += self.speed_y
+        # Moves bullet every frame, and stops processing it if it gets out of screen
+        self.rect.move_ip(0, self.speed_y)
         if self.rect.top > screen_height:
             self.kill()
 
 
+Arial = pygame.font.match_font('arial')
 
-font_name = pygame.font.match_font('arial')
 
-# This function draws given string on screen
+# This function draws given string on a screen
 def draw_text(surf, text, size, x, y):
-    font = pygame.font.Font(font_name, size)
-    text_surface = font.render(text, True, (255, 255, 255))
-    text_rect = text_surface.get_rect()
-    text_rect.midtop = (x, y)
-    surf.blit(text_surface, text_rect)
-
+    font_size = pygame.font.Font(Arial, size)
+    text_surface = font_size.render(text, True, (255, 255, 255))
+    text_rect = text_surface.get_rect()  # Gets rectangles posistion
+    text_rect.midtop = (x, y)  # Text position
+    surf.blit(text_surface, text_rect)  # Push text
 
 
 pygame.display.set_caption("Arterius") # Set the game title in the window
@@ -212,7 +226,6 @@ while menu:
 
                             elif event.key == pygame.K_SPACE:
                                 player.shoot()  # Calls shoot method from player
-
 
                         elif event.type == QUIT:
                             running = False  # If player presses X in the windows options they quit the game
@@ -266,7 +279,7 @@ while menu:
                             for event in pygame.event.get():
                                 if event.type == pygame.QUIT:
                                     pygame.quit()
-
+                                #  Starts the next game when player "unclicks" a key
                                 if event.type == KEYUP:
                                     reset = False
                         all_sprites = pygame.sprite.Group()
