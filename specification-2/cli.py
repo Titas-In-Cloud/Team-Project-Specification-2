@@ -22,11 +22,11 @@ def cli():
     subparsers.add_parser("thumbnail").set_defaults(func = JPEG_thumbnail_creation)
     subparsers.add_parser("filters").set_defaults(func = image_filters)
 
-    parser.add_argument("--storage", help="lets user choose what pictures to modify")
-    parser.add_argument("--list", help="gives a list of chosen pictures for modification")
-    parser.add_argument("--thumbnail", help="converts chosen pictures to JPEG "
+    parser.add_argument("--storage", help = "lets user choose what pictures to modify")
+    parser.add_argument("--list", help = "gives a list of chosen pictures for modification")
+    parser.add_argument("--thumbnail", help = "converts chosen pictures to JPEG "
                                             "thumbnails and saves them")
-    parser.add_argument("--filters", help="lets user modify and apply filters "
+    parser.add_argument("--filters", help = "lets user modify and apply filters "
                                           "to chosen pictures")
 
     args = parser.parse_args()
