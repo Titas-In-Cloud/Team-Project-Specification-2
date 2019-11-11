@@ -16,16 +16,19 @@ image manipulation library installed (it is a fork of the Python Imaging Library
  pipenv install pillow 
 ```
 ## Usage
-There are specific functions which needs to be run for different types of 
+There are specific functions which need to be performed for different types of 
 functionalities. Run code below in ```Terminal``` if you want to:
- 1. Pick the pictures that needs to be modified - ```pipenv run python main.py storage```
+ 1. Pick the pictures that need to be modified - ```pipenv run python main.py storage```
+    * Write the full directory path from the parent directory (which is: 
+    ..\practical-3\specification-2)
+    * If the inputted directory does not exist the package will automatically create one.
  2. See the list of picked pictures - ```pipenv run python main.py list```
  3. Create JPEG thumbnails of chosen pictures - ```pipenv run python main.py thumbnail```
  4. Start the modification process of the chosen pictures - ```pipenv run python 
  main.py filters```
     * After you started the modification process, please input help for a list of 
     available filters.
-    * Follow the instructions and messeages in the ```Terminal``` for each step 
+    * Follow the instructions and messages in the ```Terminal``` for each step 
     during the modification process.
  5. Get a list with function names and their functionality - ```pipenv run python 
  main.py --help```

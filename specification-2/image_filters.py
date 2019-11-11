@@ -150,7 +150,7 @@ for picture in os.listdir(storage_folder):
 
             picture_with_last_modification_was_saved = False
 
-        # applies custom dithering filter to the picture
+        # applies custom filter to the picture
         elif command == "Fried" or command == "fried":
             for i in range(image.size[0]):
                 for j in range(image.size[1]):
