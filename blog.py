@@ -8,7 +8,7 @@ app.config['SECRET_KEY'] = 'c5bbd3bef1e17016c3c5327b7814eb2e'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 db = SQLAlchemy(app)
 
-
+# User database #
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
@@ -20,7 +20,7 @@ class User(db.Model):
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}'"
 
-
+# Post database #
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -31,7 +31,7 @@ class Post(db.Model):
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
 
-
+# Adding posts #
 posts = [
     {
         'author': 'Lapshun Chung',
@@ -62,12 +62,13 @@ posts = [
 ]
 
 
+# Homepage route #
 @app.route("/")
 @app.route("/home")
 def home():
     return render_template('home.html', posts=posts)
 
-
+# Register page route #
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
@@ -76,7 +77,7 @@ def register():
         return redirect(url_for('home'))
     return render_template('register.html', title='Register', form=form)
 
-
+# Login page route #
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -88,26 +89,26 @@ def login():
             flash('Login Unsuccessful. Please check your username and password', 'danger')
     return render_template('login.html', title='Login', form=form)
 
-
+# Specification 1 page route #
 @app.route("/spec1")
 def spec1():
     return render_template('spec-1.html', title='Specification 1', href="/spec1")
 
-
+# Specification 2 page route #
 @app.route("/spec2")
 def spec2():
     return render_template('spec-2.html', title='Specification 2', href="/spec2")
 
-
+# Specification 3 page route #
 @app.route("/spec3")
 def spec3():
     return render_template('spec-3.html', title='Specification 3', href="/spec3")
 
-
+# Specification 4 page route #
 @app.route("/spec4")
 def spec4():
     return render_template('spec-4.html', title='Specification 4', href="/spec4")
 
-
+# Running web page and activating debugger #
 if __name__ == '__main__':
     app.run(debug=True)
