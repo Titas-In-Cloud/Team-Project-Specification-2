@@ -56,11 +56,19 @@ if os.path.isdir(images_directory_for_storage) == True:
         if loop_operation_variable == "run":
             print("Error! Wrong answer. Please choose 'Yes' or 'No'")
 
-    if storage_action_choice == "Yes" or storage_action_choice == "yes":
-        print("Success! Your chosen pictures from the folder were stored successfully.")
+    loop_run = True
 
-    elif storage_action_choice == "No" or storage_action_choice == "no":
-        print("Success! All pictures from the folder were stored successfully.")
+    while loop_run == True:
+        if storage_action_choice == "Yes" or storage_action_choice == "yes":
+            print("Success! Your chosen pictures from the folder were stored successfully.")
+            loop_run = False
+
+        elif storage_action_choice == "No" or storage_action_choice == "no":
+            print("Success! All pictures from the folder were stored successfully.")
+            loop_run = False
+
+        else:
+            "Error! Please choose 'Yes' or 'No'."
 
 elif os.path.isfile(images_directory_for_storage) == True:
     # deletes all the files in storage folder
