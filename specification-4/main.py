@@ -200,25 +200,24 @@ while menu:
     pygame.display.flip()
     # True game loop
     for event in pygame.event.get():
-        if event.type == KEYDOWN:
+        if event.type == KEYDOWN:  # If enter key is pressed the player is taken out of menu
             if event.key == K_RETURN:
                 running = True
                 while running:
                     for event in pygame.event.get():
                         if event.type == KEYDOWN:
-                            if event.key == K_ESCAPE:
+                            if event.key == K_ESCAPE:  # If player presses escape, they quit the game
                                 running = False
                                 menu = False
 
                             elif event.key == pygame.K_SPACE:
-                                player.shoot()
+                                player.shoot()  # Calls shoot method from player
 
-                            elif event.key == pygame.K_KP_ENTER:
-                                enemies.update()
 
                         elif event.type == QUIT:
-                            running = False
+                            running = False  # If player presses X in the windows options they quit the game
 
+                        # This part manages events - adding enemy spaceships and meteors
                         elif event.type == ADDMETEOR:
                             new_meteor = Meteor()
                             meteors.add(new_meteor)
@@ -230,31 +229,37 @@ while menu:
                             all_sprites.add(new_enemy)
                             enemies.update()
 
-                    pressed_keys = pygame.key.get_pressed()
+                    pressed_keys = pygame.key.get_pressed()  # Gets updates for keyboard
+                    # Update all the groups
                     player.update(pressed_keys)
                     bullets.update(pressed_keys)
                     meteors.update()
                     enemies.update()
                     enemybullets.update()
+                    # Fill background with black
                     screen.fill((0, 0, 0))
+                    # Push background image to the screen
                     screen.blit(background, background.get_rect())
-
+                    # Draw all sprites
                     for entity in all_sprites:
                         screen.blit(entity.surf, entity.rect)
-
+                    # Lose conditions
                     if pygame.sprite.spritecollide(player, meteors, False, pygame.sprite.collide_circle) or (
                             pygame.sprite.spritecollide(player, enemies, False, pygame.sprite.collide_circle)) or (
                             pygame.sprite.spritecollide(player, enemybullets, False, pygame.sprite.collide_circle)):
+                        # Ends running processes
                         player.kill()
                         shoot_sound.stop()
                         move_up_sound.stop()
                         move_down_sound.stop()
+                        # Draw game over screen
                         collision_sound.play()
                         screen.blit(background, background.get_rect())
                         draw_text(screen, "Game over", 120, screen_width / 2, screen_height / 4)
                         draw_text(screen, "Press any key to play again", 50, screen_width / 2, screen_height * 3 / 4)
                         draw_text(screen, "Your score was:" + " " + str(result), 40, screen_width / 2, screen_height / 2)
                         pygame.display.flip()
+                        # Reinitializes the game
                         reset = True
                         while reset:
                             clock.tick(60)
@@ -272,22 +277,25 @@ while menu:
                         player = Player()
                         all_sprites.add(player)
                         result = 0
+                    # Scoring logic
                     scores = pygame.sprite.groupcollide(meteors, bullets, True, True)
                     enemies_down = pygame.sprite.groupcollide(enemies, bullets, True, True)
                     for score in scores:
                         result += 50
                     for enemy_down in enemies_down:
                         result += 50
+                    # Draw score
                     draw_text(screen, str(result), 20, 100, 10)
 
                     pygame.display.flip()
+                    # Framerate
                     clock.tick(60)
             elif event.key == K_ESCAPE:
                 pygame.quit()
         elif event.type == pygame.QUIT:
             pygame.quit()
 
-
+# Stops the game
 pygame.mixer.music.stop()
 pygame.mixer.quit()
 pygame.quit()
