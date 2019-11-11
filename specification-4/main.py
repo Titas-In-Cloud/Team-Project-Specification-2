@@ -1,3 +1,4 @@
+# Importing libraries and functions
 import pygame
 import random
 from pygame.locals import (
@@ -12,7 +13,7 @@ from pygame.locals import (
     KEYDOWN,
     QUIT,
 )
-
+# Setting up the window's resolution, loading music and initiating the game
 screen_width = 800
 screen_height = 600
 pygame.mixer.init()
@@ -21,6 +22,8 @@ move_down_sound = pygame.mixer.Sound("./practical-3/specification-4/resources/ph
 collision_sound = pygame.mixer.Sound("./practical-3/specification-4/resources/zapThreeToneDown.ogg")
 shoot_sound = pygame.mixer.Sound("./practical-3/specification-4/resources/laser4.ogg")
 pygame.init()
+
+#Setting up classes
 
 
 class Player(pygame.sprite.Sprite):
@@ -153,7 +156,7 @@ class EnemyBullet(pygame.sprite.Sprite):
 
 font_name = pygame.font.match_font('arial')
 
-
+# This function draws given string on screen
 def draw_text(surf, text, size, x, y):
     font = pygame.font.Font(font_name, size)
     text_surface = font.render(text, True, (255, 255, 255))
@@ -163,18 +166,20 @@ def draw_text(surf, text, size, x, y):
 
 
 
-pygame.display.set_caption("Arterius")
-clock = pygame.time.Clock()
-result = 0
+pygame.display.set_caption("Arterius") # Set the game title in the window
+clock = pygame.time.Clock() # Start the clock
+result = 0 # Set the starting score
+# Load the music
 pygame.mixer.music.load("./practical-3/specification-4/resources/background.mp3")
-pygame.mixer.music.play(loops=-1)
-screen = pygame.display.set_mode([screen_width, screen_height])
-background = pygame.image.load("./practical-3/specification-4/resources/starfield.png")
+pygame.mixer.music.play(loops=-1) # Loops the music
+screen = pygame.display.set_mode([screen_width, screen_height]) # Sets the screen mode
+background = pygame.image.load("./practical-3/specification-4/resources/starfield.png") # Loads the background
+# Add the events, set timers
 ADDMETEOR = pygame.USEREVENT + 1
 pygame.time.set_timer(ADDMETEOR, 500)
 ADDENEMY = pygame.USEREVENT + 2
 pygame.time.set_timer(ADDENEMY, 2500)
-
+# Add sprites to pygame groups
 player = Player()
 enemies = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
@@ -182,16 +187,18 @@ meteors = pygame.sprite.Group()
 enemybullets = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
-# Run until the user asks to quit
+# Run the game, menu loop sets the menu
 menu = True
 while menu:
+    # Draw the background image
     screen.blit(background, background.get_rect())
+    # Draw text
     draw_text(screen, "Arterius", 80, screen_width / 2, screen_height / 4)
     draw_text(screen, "To move use arrow keys, to shoot press space", 30,
               screen_width / 2, screen_height / 2)
     draw_text(screen, "Press enter to continue", 22, screen_width / 2, screen_height * 3 / 4)
     pygame.display.flip()
-
+    # True game loop
     for event in pygame.event.get():
         if event.type == KEYDOWN:
             if event.key == K_RETURN:
