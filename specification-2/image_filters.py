@@ -37,6 +37,8 @@ print("Please input 'Help' to get a list of available filters and modifications.
 for picture in os.listdir(storage_folder):
     image = Image.open(storage_folder + "\\" + picture)
 
+    image_size = os.path.getsize(storage_folder + "\\" + picture)
+
     picture_with_last_modification_was_saved = True
     error = False
 
@@ -107,7 +109,7 @@ for picture in os.listdir(storage_folder):
 
         # enhances picture
         elif command == "Enhance" or command == "enhance":
-            edge_enhance_picture_answer = input("Do you want to enhance picture a lot? ")
+            edge_enhance_picture_answer = input("Do you want to make very enhance picture? ")
             if edge_enhance_picture_answer == "Yes" or edge_enhance_picture_answer == "yes":
                 image = image.filter(ImageFilter.EDGE_ENHANCE_MORE)
                 picture_with_last_modification_was_saved = False
@@ -125,7 +127,7 @@ for picture in os.listdir(storage_folder):
 
         # smoothens picture
         elif command == "Smooth" or command == "smooth":
-            edge_enhance_picture_answer = input("Do you want to smooth picture a lot? ")
+            edge_enhance_picture_answer = input("Do you want to make very smooth picture? ")
             if edge_enhance_picture_answer == "Yes" or edge_enhance_picture_answer == "yes":
                 image = image.filter(ImageFilter.SMOOTH_MORE)
                 picture_with_last_modification_was_saved = False
@@ -179,6 +181,9 @@ for picture in os.listdir(storage_folder):
 
         # applies custom filter to the picture
         elif command == "Fried" or command == "fried":
+            if image_size > 300000:
+                print("Please, be patient, filter application to the bigger "
+                      "file can take some time.")
             for i in range(image.size[0]):
                 for j in range(image.size[1]):
                     # get pixels one by one around one of the pixels
@@ -230,7 +235,6 @@ for picture in os.listdir(storage_folder):
                         pixel_map[i + 1, j + 1] = (r[3], g[3], b[3])
 
             picture_with_last_modification_was_saved = False
-
 
         # rotates the picture some amount of degrees
         elif command == "Rotate" or command == "rotate":
