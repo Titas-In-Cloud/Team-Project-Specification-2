@@ -16,6 +16,7 @@ image manipulation library installed (it is a fork of the Python Imaging Library
  pipenv install pillow 
 ```
 ## Usage
+Before using the package make sure that the directory path ends with '\specification-2'. \
 There are specific functions which need to be performed for different types of 
 functionalities. Run code below in ```Terminal``` if you want to:
  1. Pick the pictures that need to be modified - ```pipenv run python main.py storage```

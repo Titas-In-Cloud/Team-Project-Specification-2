@@ -63,7 +63,8 @@ for picture in os.listdir(storage_folder):
                   " * Edges - applies edges filter to the picture \n"
                   " * Enhance - applies enhance filter to the picture \n"
                   " * Smooth - applies smooth filter to the picture \n"
-                  " * Greyscale - applies custom greyscale filter \n"
+                  " * Grayscale - applies custom greyscale filter \n"
+                  " * Retro - applies custom retro filter \n"
                   " * Fried - applies custom filter \n"
                   " * Rotate - rotates the picture in inputed amount degrees \n"
                   " * Cancel - cancels all filters applied to the picture \n"
@@ -141,12 +142,38 @@ for picture in os.listdir(storage_folder):
                 error = True
 
         # applies custom greyscale filter to the picture
-        elif command == "Greyscale" or command == "greyscale":
+        elif command == "Grayscale" or command == "grayscale":
             for i in range(image.size[0]):
                 for j in range(image.size[1]):
                     red, green, blue = pixel_map[i, j]
                     pixel_brightness = int(round(0.299 * red + 0.587 * green + 0.114 * blue))
                     pixel_map[i, j] = (pixel_brightness, pixel_brightness, pixel_brightness)
+
+            picture_with_last_modification_was_saved = False
+
+        # applies custom retro filter to the picture
+        elif command == "Retro" or command == "retro":
+            for i in range(image.size[0]):
+                if i % 2 == 0:
+                    for j in range(image.size[1]):
+                        if j % 2 == 0:
+                            coordinate = i, j
+                            pixel = image.getpixel(coordinate)
+
+                            # unpacks the pixel tuple
+                            (red, green, blue) = pixel
+
+                            r = [0]
+                            g = [0]
+                            b = [0]
+
+                            # gets quadrant colors
+                            r[0] = custom_filter_saturation(red, 0)
+                            g[0] = custom_filter_saturation(green, 0)
+                            b[0] = custom_filter_saturation(blue, 0)
+
+                            # puts modified pixel values into the picture
+                            pixel_map[i, j] = (r[0], g[0], b[0])
 
             picture_with_last_modification_was_saved = False
 
@@ -190,7 +217,7 @@ for picture in os.listdir(storage_folder):
                         g[x] = custom_filter_saturation(green, x)
                         b[x] = custom_filter_saturation(blue, x)
 
-                    # puts dithered pixel values into the picture
+                    # puts modified pixel values into the picture
                     pixel_map[i, j] = (r[0], g[0], b[0])
 
                     if image.size[0] != i + 1:
