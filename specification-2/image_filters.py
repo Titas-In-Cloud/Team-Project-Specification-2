@@ -69,17 +69,17 @@ for picture in os.listdir(storage_folder):
                   " * Emboss - applies emboss filter to the picture \n"
                   " * Sharpen - applies sharpen filter to the picture \n"
                   " * Detail - applies detail filter to the picture \n"
-                  " * Edges - applies edges filter to the picture \n"
+                  " * Edges - applies edge filter to the picture \n"
                   " * Enhance - applies enhance filter to the picture \n"
                   " * Smooth - applies smooth filter to the picture \n"
-                  " * Grayscale - applies custom greyscale filter \n"
+                  " * Grayscale - applies custom grayscale filter \n"
                   " * Retro - applies custom retro filter \n"
-                  " * Fried - applies custom filter \n"
-                  " * Rotate - rotates the picture in inputed amount degrees \n"
+                  " * Fried - applies custom 'fried' filter \n"
+                  " * Rotate - rotates the picture in inputted amount of degrees \n"
                   " * Cancel - cancels all filters applied to the picture \n"
                   " * Save - saves the picture \n"
-                  " * End - ends picture modification process \n"
-                  " * Exit - exits filter program" )
+                  " * End - ends current picture's modification process \n"
+                  " * Exit - exits filter program")
 
         # shows modified picture
         elif command == "Show" or command == "show":

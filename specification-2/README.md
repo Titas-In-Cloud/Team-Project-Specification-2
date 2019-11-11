@@ -21,11 +21,14 @@ ends with '\specification-2'. \
 There are specific functions which need to be performed for different types of 
 functionalities. Run code below in ```Terminal``` if you want to:
  1. Pick the pictures that need to be modified - ```pipenv run python main.py storage```
-    * Write the full directory path from the parent directory (which is: 
-    ..\practical-3\specification-2)
+    * Write the full directory path starting from the parent directory (which 
+    should be: ..\practical-3\specification-2) when choosing pictures.
     * If the inputted directory does not exist the package will automatically create one.
+    * Follow further instructions in ```Terminal``` for storing the pictures.
  2. See the list of picked pictures - ```pipenv run python main.py list```
  3. Create JPEG thumbnails of chosen pictures - ```pipenv run python main.py thumbnail```
+    * Follow instructions in ```Terminal``` to set the size of JPEG thumbnails 
+    and folder where the thumbnails will be saved.
  4. Start the modification process of the chosen pictures - ```pipenv run python 
  main.py filters```
     * After you started the modification process, please input help for a list of 
