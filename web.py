@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, flash, redirect
 from flask_sqlalchemy import SQLAlchemy
-from Blog.forms import RegistrationForm, LoginForm
+from forms import RegistrationForm, LoginForm
 from datetime import datetime
 
 app = Flask(__name__)
@@ -19,6 +19,7 @@ class User(db.Model):
     posts = db.relationship('Post', backref='author', lazy=True)
 
     def __repr__(self):
+        """Reproduces username, email, and profile picture."""
         return f"User('{self.username}', '{self.email}', '{self.image_file}'"
 
 
@@ -31,6 +32,7 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
+        """Reproduces title and date posted."""
         return f"Post('{self.title}', '{self.date_posted}')"
 
 
@@ -52,7 +54,7 @@ posts = [
     {
         'author': 'Jay Mavin',
         'title': 'Specification 3',
-        'content': 'Making a web application using the Flask library. This can be found in the Home page',
+        'content': 'Making a web application using the Flask library. More information can be found on the About page',
         'date_posted': 'Nov 10, 2019'
     },
 
@@ -69,12 +71,20 @@ posts = [
 @app.route("/")
 @app.route("/home")
 def home():
+    """Making home page."""
     return render_template('home.html', posts=posts)
+
+# About page route #
+@app.route("/about")
+def about():
+    """Making about web page."""
+    return render_template('about.html', title='About')
 
 
 # Register page route #
 @app.route("/register", methods=['GET', 'POST'])
 def register():
+    """Making register page which shows a message after submitting registration then redirects user back to homepage."""
     form = RegistrationForm()
     if form.validate_on_submit():
         flash(f'Account created for {form.username.data}!', 'success')
@@ -85,6 +95,7 @@ def register():
 # Login page route #
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+    """Making login page which shows a message after logging in and redirects user back to homepage."""
     form = LoginForm()
     if form.validate_on_submit():
         if form.email.data == 'jaymavin123@gmail.com' and form.password.data == 'password':
@@ -98,24 +109,21 @@ def login():
 # Specification 1 page route #
 @app.route("/spec1")
 def spec1():
+    """Making specification 1 page."""
     return render_template('spec-1.html', title='Specification 1')
 
 
 # Specification 2 page route #
 @app.route("/spec2")
 def spec2():
+    """Making specification 2 page."""
     return render_template('spec-2.html', title='Specification 2')
-
-
-# Specification 3 page route #
-@app.route("/spec3")
-def spec3():
-    return render_template('spec-3.html', title='Specification 3')
 
 
 # Specification 4 page route #
 @app.route("/spec4")
 def spec4():
+    """Making specification 4 page."""
     return render_template('spec-4.html', title='Specification 4')
 
 
