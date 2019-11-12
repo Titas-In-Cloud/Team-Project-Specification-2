@@ -71,7 +71,7 @@ posts = [
 @app.route("/")
 @app.route("/home")
 def home():
-    """Making home page."""
+    """Making homepage."""
     return render_template('home.html', posts=posts)
 
 # About page route #
@@ -98,7 +98,7 @@ def login():
     """Making login page which shows a message after logging in and redirects user back to homepage."""
     form = LoginForm()
     if form.validate_on_submit():
-        if form.email.data == 'jaymavin123@gmail.com' and form.password.data == 'password':
+        if form.email.data == 'user@gmail.com' and form.password.data == 'password':
             flash('You have been logged in!', 'success')
             return redirect(url_for('home'))
         else:
