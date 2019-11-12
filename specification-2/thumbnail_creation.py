@@ -4,12 +4,12 @@ from PIL import Image
 # folder path where the pictures are temporarily stored for modification
 storage_folder = ".\picture_storage_folder"
 
-thumbnail_dimensions = input("What size thumbnail would you like to create? ")
+thumbnail_dimensions = input(" * What size thumbnail would you like to create? ")
 
 thumbnail_size = (int(thumbnail_dimensions), int(thumbnail_dimensions))
 
 thumbnail_storage_location_path = \
-        input("Where would you like to save created thumbnail/s? ")
+        input(" * Where would you like to save created thumbnail/s? ")
 
 # variable used to determine if the person chose one or multiple pictures
 picture_amount_in_the_folder = 0
@@ -33,7 +33,7 @@ for picture in os.listdir(storage_folder):
     picture_amount_in_the_folder += 1
 
 if picture_amount_in_the_folder == 1:
-    print("Success! Picture was successfully saved and converted to JPEG thumbnail")
+    print("- Success! Picture was successfully saved and converted to JPEG thumbnail")
 
 else:
-    print("Success! Pictures were successfully saved and converted to JPEG thumbnails")
+    print("- Success! Pictures were successfully saved and converted to JPEG thumbnails")

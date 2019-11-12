@@ -8,7 +8,7 @@ storage_folder = ".\picture_storage_folder"
 if os.path.isdir(storage_folder) == False:
     os.mkdir(storage_folder)
 
-images_directory_for_storage = input("What picture/s would you like "
+images_directory_for_storage = input(" * What picture/s would you like "
                                      "to store for modification: ")
 
 if os.path.isdir(images_directory_for_storage) == True:
@@ -19,7 +19,7 @@ if os.path.isdir(images_directory_for_storage) == True:
 
     # loop will stop only when the person inputs the right answer ('Yes' or 'No')
     while error == True:
-        storage_action_choice = input("Do you want to choose which pictures you want "
+        storage_action_choice = input(" * Do you want to choose which pictures you want "
                                       "to store for modification from this folder? ")
 
         # function which lets person choose what pictures he wants to store for modification
@@ -41,7 +41,7 @@ if os.path.isdir(images_directory_for_storage) == True:
                     loop_run = True
 
                     while loop_run == True:
-                        file_choice_answer = input("Do you want to store " + picture + "? ")
+                        file_choice_answer = input(" * Do you want to store " + picture + "? ")
                         if file_choice_answer == "Yes" or file_choice_answer == "yes":
                             image.save(storage_folder + "\\" + picture)
                             chosen_pictures += 1
@@ -51,7 +51,7 @@ if os.path.isdir(images_directory_for_storage) == True:
                             loop_run = False
 
                         else:
-                            print("Error! Please choose 'Yes' or 'No'.")
+                            print("- Error! Please choose 'Yes' or 'No'.")
 
         # function which stores all the pictures for modification from the chosen directory
         if storage_action_choice == "No" or storage_action_choice == "no":
@@ -71,16 +71,16 @@ if os.path.isdir(images_directory_for_storage) == True:
                     image.save(storage_folder + "\\" + picture)
 
         if error == True:
-            print("Error! Please choose 'Yes' or 'No'")
+            print("- Error! Please choose 'Yes' or 'No'")
 
     if storage_action_choice == "Yes" or storage_action_choice == "yes" and chosen_pictures != 0:
-        print("Success! Your chosen pictures from the folder were stored successfully.")
+        print("- Success! Your chosen pictures from the folder were stored successfully.")
 
     elif storage_action_choice == "No" or storage_action_choice == "no":
-        print("Success! All pictures from the folder were stored successfully.")
+        print("- Success! All pictures from the folder were stored successfully.")
 
     elif storage_action_choice == "Yes" or storage_action_choice == "yes" and chosen_pictures == 0:
-        print("Error! None of the pictures in the directory were selected.")
+        print("- Error! None of the pictures in the directory were selected.")
 
 elif os.path.isfile(images_directory_for_storage) == True:
     # empties the storage folder
@@ -93,7 +93,7 @@ elif os.path.isfile(images_directory_for_storage) == True:
 
     # stores chosen picture to the temporary storage folder
     image.save(storage_folder + "\\" + file_name)
-    print("Success! Picture was scanned successfully.")
+    print("- Success! Picture was scanned successfully.")
 
 else:
-    print("Error! File or folder does not exist.")
+    print("- Error! File or folder does not exist.")

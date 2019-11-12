@@ -68,6 +68,7 @@ for picture in os.listdir(storage_folder):
     # variable used to determine if input was right (False = Yes, True = No)
     error = False
 
+    print("")
     print(picture + " was picked for modification.")
 
     # command - the action that the user wants to execute
@@ -76,6 +77,9 @@ for picture in os.listdir(storage_folder):
     while command != "end the loop":
         # creates picture's pixel map
         pixel_map = image.load()
+
+        # variable used to determine if the last command was filter
+        filter_setting = False
 
         # answer to one of the questions in the function was wrong so the command
         # input will be skipped and the loop will continue until the answer
@@ -97,6 +101,7 @@ for picture in os.listdir(storage_folder):
                   " * Smooth - applies smooth filter to the picture \n"
                   " * Grayscale - applies custom grayscale filter \n"
                   " * Retro - applies custom retro filter \n"
+                  " * Dither - applies custom dither filer \n"
                   " * Fried - applies custom 'fried' filter \n"
                   " * Rotate - rotates the picture in inputted amount of degrees \n"
                   " * Cancel - cancels all filters applied to the picture \n"
@@ -139,15 +144,19 @@ for picture in os.listdir(storage_folder):
                 print("- Error! Please choose 'Yes' or 'No'.")
                 error = True
 
+            filter_setting = True
+
         # applies Contour filter to the image
         elif command == "Contour" or command == "contour":
             image = image.filter(ImageFilter.CONTOUR)
             picture_with_last_modification_was_saved = False
+            filter_setting = True
 
         # applies Emboss filter to the image
         elif command == "Emboss" or command == "emboss":
             image = image.filter(ImageFilter.EMBOSS)
             picture_with_last_modification_was_saved = False
+            filter_setting = True
 
         # sharpens the picture
         elif command == "Sharpen" or command == "sharpen":
@@ -202,15 +211,19 @@ for picture in os.listdir(storage_folder):
                 print("- Error! Please choose 'Yes' or 'No'.")
                 error = True
 
+            filter_setting = True
+
         # applies Detail filter to the image
         elif command == "Detail" or command == "detail":
             image = image.filter(ImageFilter.DETAIL)
             picture_with_last_modification_was_saved = False
+            filter_setting = True
 
         # applies Find Edges filter to the image
         elif command == "Edges" or command == "edges":
             image = image.filter(ImageFilter.FIND_EDGES)
             picture_with_last_modification_was_saved = False
+            filter_setting = True
 
         # enhances the picture
         elif command == "Enhance" or command == "enhance":
@@ -232,6 +245,8 @@ for picture in os.listdir(storage_folder):
                 print("- Error! Please choose 'Yes' or 'No'.")
                 error = True
 
+            filter_setting = True
+
         # smoothens picture
         elif command == "Smooth" or command == "smooth":
             smooth_picture_answer = input(" * Do you want to make very smooth picture? ")
@@ -252,6 +267,8 @@ for picture in os.listdir(storage_folder):
                 print("- Error! Please choose 'Yes' or 'No'.")
                 error = True
 
+            filter_setting = True
+
         # applies custom Greyscale filter to the picture
         elif command == "Grayscale" or command == "grayscale":
             for i in range(image.size[0]):
@@ -264,6 +281,7 @@ for picture in os.listdir(storage_folder):
                     pixel_map[i, j] = (pixel_brightness, pixel_brightness, pixel_brightness)
 
             picture_with_last_modification_was_saved = False
+            filter_setting = True
 
         # applies custom Retro filter to the picture
         elif command == "Retro" or command == "retro":
@@ -291,8 +309,72 @@ for picture in os.listdir(storage_folder):
                             pixel_map[i, j] = (r[0], g[0], b[0])
 
             picture_with_last_modification_was_saved = False
+            filter_setting = True
 
-        # applies custom filter to the picture
+        # applies custom Dither filter to the picture
+        elif command == "Dither" or command == "dither":
+            if image_size > 300000:
+                print("- Please, be patient, filter application to the bigger "
+                      "file can take some time. -")
+
+            for i in range(image.size[0]):
+                if i % 2 == 0:
+                    for j in range(image.size[1]):
+                        if j % 2 == 0:
+                            coordinate = i, j
+
+                            # extracts RGB values from the pixel and 3 pixels around it
+                            pixel_1 = image.getpixel(coordinate)
+
+                            if image.size[0] != i + 1:
+                                coordinate = i + 1, j
+                                pixel_2 = image.getpixel(coordinate)
+
+                            if image.size[1] != j + 1:
+                                coordinate = i, j + 1
+                                pixel_3 = image.getpixel(coordinate)
+
+                            if image.size[0] != i + 1 and image.size[1] != j + 1:
+                                coordinate = i + 1, j + 1
+                                pixel_4 = image.getpixel(coordinate)
+
+                            # unpacks tuple values
+                            (px11, px12, px13) = pixel_1
+                            (px21, px22, px23) = pixel_2
+                            (px31, px32, px33) = pixel_3
+                            (px41, px42, px43) = pixel_4
+
+                            # saturates color by RGB values
+                            red = (px11 + px21 + px31 + px41) / 4
+                            green = (px12 + px22 + px32 + px42) / 4
+                            blue = (px13 + px23 + px33 + px43) / 4
+
+                            r = [0, 0, 0, 0]
+                            g = [0, 0, 0, 0]
+                            b = [0, 0, 0, 0]
+
+                            # gets quadrant color
+                            for x in range(0, 4):
+                                r[x] = custom_filter_saturation(red, x)
+                                g[x] = custom_filter_saturation(green, x)
+                                b[x] = custom_filter_saturation(blue, x)
+
+                            # puts modified pixel values into the picture
+                            pixel_map[i, j] = (r[0], g[0], b[0])
+
+                            if image.size[0] != i + 1:
+                                pixel_map[i + 1, j] = (r[1], g[1], b[1])
+
+                            if image.size[1] != j + 1:
+                                pixel_map[i, j + 1] = (r[2], g[2], b[2])
+
+                            if image.size[0] != i + 1 and image.size[1] != j + 1:
+                                pixel_map[i + 1, j + 1] = (r[3], g[3], b[3])
+
+            picture_with_last_modification_was_saved = False
+            filter_setting = True
+
+        # applies custom Fried filter to the picture
         elif command == "Fried" or command == "fried":
             if image_size > 300000:
                 print("- Please, be patient, filter application to the bigger "
@@ -351,6 +433,7 @@ for picture in os.listdir(storage_folder):
                         pixel_map[i + 1, j + 1] = (r[3], g[3], b[3])
 
             picture_with_last_modification_was_saved = False
+            filter_setting = True
 
         # rotates the picture some amount of degrees
         elif command == "Rotate" or command == "rotate":
@@ -372,17 +455,25 @@ for picture in os.listdir(storage_folder):
         # cancels all modifications done to the image
         elif command == "Cancel" or command == "cancel":
             image = Image.open(storage_folder + "\\" + picture)
+
+            if picture_with_last_modification_was_saved == False:
+                print("- Success! All modifications were removed from the picture.")
+
             picture_with_last_modification_was_saved = True
 
         # saves the modified picture
         elif command == "Save" or command == "save":
-            # splits the file path into file name and the rest of the directory path
-            file_path, file_name = os.path.split(storage_folder + "\\" + picture)
+            if picture_with_last_modification_was_saved == False:
+                # splits the file path into file name and the rest of the directory path
+                file_path, file_name = os.path.split(storage_folder + "\\" + picture)
 
-            # calls save function from image_save.py file
-            image_save.image_save(image, file_name)
+                # calls save function from image_save.py file
+                image_save.image_save(image, file_name)
 
-            picture_with_last_modification_was_saved = True
+                picture_with_last_modification_was_saved = True
+
+            else:
+                print("- Error! No modifications were made to the picture.")
 
         # ends picture's modification progress with or without saving the modified picture
         # if picture was modified it will ask if user wants to save it, if not the
@@ -418,9 +509,16 @@ for picture in os.listdir(storage_folder):
         # exits the images filter program (ends both loops)
         elif command == "Exit" or command == "exit":
             exit = True
+            print("- Exit was successful.")
             break
 
         # returns error if inputted command value is incorrect
         else:
             print("- Error! Wrong command. Please input 'Help' to get a list of "
                   "available filters and modifications.")
+
+        if error == False and filter_setting == True:
+            print("- Success! " + command + " filter was applied.")
+
+        elif error == False and (command == "Rotate" or command == "rotate"):
+            print("- Success! Picture was rotated " + str(rotation_degrees) + " degrees.")
