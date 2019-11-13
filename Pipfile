@@ -9,6 +9,13 @@ verify_ssl = true
 flask = "*"
 matplotlib = "*"
 pillow = "*"
+template-render = "*"
+template = "*"
+wtforms = "*"
+flask-wtf = "*"
+src = "*"
+Flask-SQLAlchemy = "*"
+pygame = "*"
 
 [requires]
 python_version = "3.7"
