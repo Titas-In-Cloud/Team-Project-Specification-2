@@ -1,3 +1,36 @@
+# Flask
+
+In this specification, I made a web application using the Python-based web framework Flask as
+part of practical 3 for CSC1034 at Newcastle University.
+
+## Installation
+
+Run in the terminal: 
+
+    pipenv update
+    
+## Usage
+
+To run the web application in terminal:
+    
+    python ./specification-3/web.py
+    
+## Libraries
+
+Make sure to install these libraries to run the web application:
+
+* Flask
+* Flask_sqlalchemy
+* Flask_wtf
+* Wtforms
+* Wtforms.validators
+
+Install these libraries by running in terminal:
+
+    pip install (library name)
+
+
+
 ### Specification 3
 
 In this challenge you are going to build a web application using a
