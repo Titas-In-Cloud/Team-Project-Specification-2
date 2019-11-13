@@ -13,7 +13,7 @@ image manipulation library installed (it is a fork of the Python Imaging Library
 (PIL)). To install the Pillow module please write the code specified below in 
 ```Terminal```:
 ```
- pipenv install pillow 
+ pipenv update 
 ```
 ## Usage
 Before using the package make sure that the directory path in ```Terminal``` 
