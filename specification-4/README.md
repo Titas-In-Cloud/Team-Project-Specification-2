@@ -1,3 +1,42 @@
+# Arterius
+
+Arterius is a game made by Wojciech Bigosinski as part
+of the project 3 for CSC1034 at Newcastle University.
+
+## Installation
+
+Run in the terminal: 
+
+    pipenv update
+    
+## Usage
+
+To run the game in the terminal type:
+    
+    python ./specification-4/main.py
+    
+Most importantly have fun!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### Specification 4
 
 In this challenge it is up to you to choose a Python library that

@@ -1,4 +1,4 @@
----
+ ---
 title: Managing a Team Project
 author: Jordan Barnes
 ---
@@ -241,6 +241,7 @@ You can add supporting material to relate to the report e.g. images,
 code snippets, appendices.
 
 ## Deliverables
+
 
 Your coursework must be submitted to the NESS system by the deadline
 specified. Note that NESS imposes deadlines rigorously, and even work

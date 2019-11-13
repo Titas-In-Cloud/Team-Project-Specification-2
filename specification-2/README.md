@@ -1,53 +1,49 @@
-### Specification 2
+# CSC1034: Practical 3 - Specification 2
+This package allows user to modify and apply filters to the pictures.
+## Description
+Package was created during the third practical of the **CSC1034** course 
+while working on a group project and  is intended to be used for modifying, 
+applying filters and saving modified different types of images in a user-friendly 
+manner. There are numbers of filters which user can apply to the chosen pictures, 
+this includes blur, emboss, greyscale, enhance and a lot more.
 
-In this challenge, you are going to be exploring image manipulation
-using the Pillow Python library. Write a program that modifies a
-selection of images of various sizes and file formats and converts
-them to JPEG thumbnails. Your program should allow the user to apply a
-selection of modifications to an image and then store the modified
-image. To be able to modify images in this way, you will have to make
-use of the Pillow Python library. This library is a fork of the Python
-Imaging Library (PIL), so much of the existing functionality is still
-there, however, the library has been expanded further.
-
-After you completed the core features of the program, expand your
-program by experimenting with different features of the Pillow library
-and showing your results. For example, you could manipulate the
-specific RGB values of each pixel of an image. If applicable, make
-sure to discuss what features you have experimented with in your
-individual report.
-
-#### Objectives
-
-* Read in image files and store them in an appropriate collection
-  ready for modification.
-* Convert the images to thumbnails and name the new files
-  appropriately.
-* Apply various filters to the images using the *ImageFilter* module.
-* Modify the RGB values of images to produce a new filter.
-* Experiment with the Pillow library and its modules and save what you
-  have produced.
-
-#### Learning Outcomes
-
-* To be able to investigate a library's documentation page to produce
-  code that satisfies an objective.
-* To be able to handle the reading and writing of files.
-* To be able to explore the various applications of a library's
-  modules to produce different results.
-* To use your knowledge of traversing collections to explore the
-  different properties of an image.
-* To use your understanding of a library and produce something
-  creative.
-
-#### Concepts to consider
-
-* Image IO
-* Collections
-* Sorting and traversal of collections
-* Conditionals
-  
-#### Libraries to investigate
-
-* [Pillow](https://pillow.readthedocs.io/en/stable/)
-
+## Installation
+This package runs on Python version 3.7 or above and needs additional Pillow 
+image manipulation library installed (it is a fork of the Python Imaging Library 
+(PIL)). To install the Pillow module please write the code specified below in 
+```Terminal```:
+```
+ pipenv update 
+```
+## Usage
+Before using the package make sure that the directory path in ```Terminal``` 
+ends with '\specification-2'. \
+There are specific functions which need to be performed for different types of 
+functionalities. Run code below in ```Terminal``` if you want to:
+ 1. Pick the pictures that need to be modified - ```pipenv run python main.py storage```
+    * Write the full directory path starting from the parent directory (which 
+    should be: ..\practical-3\specification-2) when choosing the picture folder.
+    * Write the full directory path starting from the parent directory (which 
+    should be: ..\practical-3\specification-2) and full file name with extension 
+    when choosing the file.
+    * Follow further instructions in ```Terminal``` for storing the pictures 
+    for modification.
+ 2. See the list of picked pictures - ```pipenv run python main.py list```
+ 3. Create JPEG thumbnails of chosen pictures - ```pipenv run python main.py thumbnail```
+    * Follow instructions in ```Terminal``` to set the size of JPEG thumbnails 
+    and directory where the thumbnails will be saved.
+    * If the inputted directory does not exist the package will automatically create one.
+ 4. Start the modification process of the chosen pictures - ```pipenv run python 
+ main.py filters```
+    * After you started the modification process, please input help for a list of 
+    available filters.
+    * Follow the instructions and messages in the ```Terminal``` for each step 
+    during the modification process.
+    * During the save process if the inputted directory does not exist the package
+    will automatically create one.
+ 5. Get a list with function names and their functionality - ```pipenv run python 
+ main.py --help```
+ 
+## License
+This project is licensed under the MIT License - see the **LICENSE.md** file for
+details.
