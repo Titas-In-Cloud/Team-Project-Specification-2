@@ -242,6 +242,7 @@ code snippets, appendices.
 
 ## Deliverables
 
+
 Your coursework must be submitted to the NESS system by the deadline
 specified. Note that NESS imposes deadlines rigorously, and even work
 that is a few seconds late (e.g. because of network delays caused by
