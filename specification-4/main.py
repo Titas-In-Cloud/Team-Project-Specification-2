@@ -198,6 +198,8 @@ clock = pygame.time.Clock() # Start the clock
 result = 0 # Set the starting score
 # Load the music
 screen = pygame.display.set_mode([screen_width, screen_height]) # Sets the screen mode
+pygame.mixer.music.load("./specification-4/resources/0595.ogg")
+pygame.mixer.music.play(loops=-1)
 move_up_sound = pygame.mixer.Sound("./specification-4/resources/phaserUp5.ogg")
 move_down_sound = pygame.mixer.Sound("./specification-4/resources/phaserDown2.ogg")
 collision_sound = pygame.mixer.Sound("./specification-4/resources/zapThreeToneDown.ogg")
