@@ -43,6 +43,7 @@ functionalities. Run code below in ```Terminal``` if you want to:
     will automatically create one.
  5. Get a list with function names and their functionality - ```pipenv run python 
  main.py --help```
+ 
 ## License
 This project is licensed under the MIT License - see the **LICENSE.md** file for
 details.
