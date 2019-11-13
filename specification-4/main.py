@@ -17,10 +17,10 @@ from pygame.locals import (
 screen_width = 800
 screen_height = 600
 pygame.mixer.init()
-move_up_sound = pygame.mixer.Sound("./practical-3/specification-4/resources/phaserUp5.ogg")
-move_down_sound = pygame.mixer.Sound("./practical-3/specification-4/resources/phaserDown2.ogg")
-collision_sound = pygame.mixer.Sound("./practical-3/specification-4/resources/zapThreeToneDown.ogg")
-shoot_sound = pygame.mixer.Sound("./practical-3/specification-4/resources/laser4.ogg")
+move_up_sound = pygame.mixer.Sound("./specification-4/resources/phaserUp5.ogg")
+move_down_sound = pygame.mixer.Sound("./specification-4/resources/phaserDown2.ogg")
+collision_sound = pygame.mixer.Sound("./specification-4/resources/zapThreeToneDown.ogg")
+shoot_sound = pygame.mixer.Sound("./specification-4/resources/laser4.ogg")
 pygame.init()
 
 # Setting up classes
@@ -31,7 +31,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         """Sets up player object"""
         super(Player, self).__init__()  # Allows class to inherit from pygame sprite class
-        self.surf = pygame.image.load("./practical-3/specification-4/resources/playerShip2_blue.png")  # Load the image
+        self.surf = pygame.image.load("./specification-4/resources/playerShip2_blue.png")  # Load the image
         self.surf.set_colorkey((0, 0, 0), RLEACCEL)  # Allows image to blend in with the background and makes it faster
         self.rect = self.surf.get_rect()
         self.radius = 18
@@ -82,7 +82,7 @@ class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y):
         """Sets up bullet objects, takes input for starting location"""
         super(Bullet, self).__init__()  # Allows class to inherit from pygame sprite class
-        self.surf = pygame.image.load("./practical-3/specification-4/resources/laserBlue02.png")  # Load the image
+        self.surf = pygame.image.load("./specification-4/resources/laserBlue02.png")  # Load the image
         self.surf.set_colorkey((0, 0, 0), RLEACCEL)  # Allows image to blend in with the background and makes it faster
         self.rect = self.surf.get_rect()
         # Part of a code allowing bullet to spawn at the top of the player sprite
@@ -104,7 +104,7 @@ class Meteor(pygame.sprite.Sprite):
     def __init__(self):
         """Sets up meteor objects"""
         super(Meteor, self).__init__()  # Allows class to inherit from pygame sprite class
-        self.surf = pygame.image.load("./practical-3/specification-4/resources/meteorBrown_big1.png")  # Load the image
+        self.surf = pygame.image.load("./specification-4/resources/meteorBrown_big1.png")  # Load the image
         self.surf.set_colorkey((0, 0, 0), RLEACCEL)  # Allows image to blend in with the background and makes it faster
         # Set the starting random positions
         self.rect = self.surf.get_rect(
@@ -133,7 +133,7 @@ class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         """Sets up enemy objects"""
         super(Enemy, self).__init__()  # Allows class to inherit from pygame sprite class
-        self.surf = pygame.image.load("./practical-3/specification-4/resources/enemyRed1.png")  # Load the image
+        self.surf = pygame.image.load("./specification-4/resources/enemyRed1.png")  # Load the image
         self.surf.set_colorkey((0, 0, 0), RLEACCEL)  # Allows image to blend in with the background and makes it faster
         # Set the starting random positions
         self.rect = self.surf.get_rect(
@@ -165,7 +165,7 @@ class EnemyBullet(pygame.sprite.Sprite):
     """Sets up enemy bullet class, based on preexisting pygame sprite class"""
     def __init__(self, x, y):
         super(EnemyBullet, self).__init__()  # Allows class to inherit from pygame sprite class
-        self.surf = pygame.image.load("./practical-3/specification-4/resources/laserRed02.png")  # Load the image
+        self.surf = pygame.image.load("./specification-4/resources/laserRed02.png")  # Load the image
         self.surf.set_colorkey((0, 0, 0), RLEACCEL)  # Allows image to blend in with the background and makes it faster
         self.rect = self.surf.get_rect()
         # Starting location at the bottom of the enemy sprite
@@ -200,10 +200,10 @@ pygame.display.set_caption("Arterius") # Set the game title in the window
 clock = pygame.time.Clock() # Start the clock
 result = 0 # Set the starting score
 # Load the music
-pygame.mixer.music.load("./practical-3/specification-4/resources/background.mp3")
+pygame.mixer.music.load("./specification-4/resources/background.mp3")
 pygame.mixer.music.play(loops=-1) # Loops the music
 screen = pygame.display.set_mode([screen_width, screen_height]) # Sets the screen mode
-background = pygame.image.load("./practical-3/specification-4/resources/starfield.png") # Loads the background
+background = pygame.image.load("./specification-4/resources/starfield.png") # Loads the background
 # Add the events, set timers
 ADDMETEOR = pygame.USEREVENT + 1
 pygame.time.set_timer(ADDMETEOR, 500)
