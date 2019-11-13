@@ -17,11 +17,8 @@ from pygame.locals import (
 screen_width = 800
 screen_height = 600
 pygame.mixer.init()
-move_up_sound = pygame.mixer.Sound("./specification-4/resources/phaserUp5.ogg")
-move_down_sound = pygame.mixer.Sound("./specification-4/resources/phaserDown2.ogg")
-collision_sound = pygame.mixer.Sound("./specification-4/resources/zapThreeToneDown.ogg")
-shoot_sound = pygame.mixer.Sound("./specification-4/resources/laser4.ogg")
 pygame.init()
+
 
 # Setting up classes
 
@@ -200,9 +197,12 @@ pygame.display.set_caption("Arterius") # Set the game title in the window
 clock = pygame.time.Clock() # Start the clock
 result = 0 # Set the starting score
 # Load the music
-pygame.mixer.music.load("./specification-4/resources/background.mp3")
-pygame.mixer.music.play(loops=-1) # Loops the music
 screen = pygame.display.set_mode([screen_width, screen_height]) # Sets the screen mode
+move_up_sound = pygame.mixer.Sound("./specification-4/resources/phaserUp5.ogg")
+move_down_sound = pygame.mixer.Sound("./specification-4/resources/phaserDown2.ogg")
+collision_sound = pygame.mixer.Sound("./specification-4/resources/zapThreeToneDown.ogg")
+shoot_sound = pygame.mixer.Sound("./specification-4/resources/laser4.ogg")
+
 background = pygame.image.load("./specification-4/resources/starfield.png") # Loads the background
 # Add the events, set timers
 ADDMETEOR = pygame.USEREVENT + 1
