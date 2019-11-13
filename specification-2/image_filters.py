@@ -101,7 +101,7 @@ for picture in os.listdir(storage_folder):
                   " * Smooth - applies smooth filter to the picture \n"
                   " * Grayscale - applies custom grayscale filter \n"
                   " * Retro - applies custom retro filter \n"
-                  " * Dither - applies custom dither filer \n"
+                  " * Dither - applies custom dither filter \n"
                   " * Fried - applies custom 'fried' filter \n"
                   " * Rotate - rotates the picture in inputted amount of degrees \n"
                   " * Cancel - cancels all filters applied to the picture \n"
@@ -269,7 +269,7 @@ for picture in os.listdir(storage_folder):
 
             filter_setting = True
 
-        # applies custom Greyscale filter to the picture
+        # applies custom Grayscale filter to the picture
         elif command == "Grayscale" or command == "grayscale":
             for i in range(image.size[0]):
                 for j in range(image.size[1]):
