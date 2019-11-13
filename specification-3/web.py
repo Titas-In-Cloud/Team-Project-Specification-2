@@ -1,40 +1,7 @@
-from flask import Flask, render_template, url_for, flash, redirect
-from flask_sqlalchemy import SQLAlchemy
-from .forms import RegistrationForm, LoginForm
-from datetime import datetime
+from flask import Flask, render_template
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'c5bbd3bef1e17016c3c5327b7814eb2e'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-db = SQLAlchemy(app)
-
-
-# User database #
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
-    password = db.Column(db.String(60), nullable=False)
-    posts = db.relationship('Post', backref='author', lazy=True)
-
-    def __repr__(self):
-        """Reproduces username, email, and profile picture."""
-        return f"User('{self.username}', '{self.email}', '{self.image_file}'"
-
-
-# Post database #
-class Post(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    content = db.Column(db.Text, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-    def __repr__(self):
-        """Reproduces title and date posted."""
-        return f"Post('{self.title}', '{self.date_posted}')"
-
 
 # Adding posts #
 posts = [
@@ -79,32 +46,6 @@ def home():
 def about():
     """Making about web page."""
     return render_template('about.html', title='About')
-
-
-# Register page route #
-@app.route("/register", methods=['GET', 'POST'])
-def register():
-    """Making register page which shows a message after submitting registration then redirects user back to homepage."""
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        flash(f'Account created for {form.username.data}!', 'success')
-        return redirect(url_for('home'))
-    return render_template('register.html', title='Register', form=form)
-
-
-# Login page route #
-@app.route("/login", methods=['GET', 'POST'])
-def login():
-    """Making login page which shows a message after logging in and redirects user back to homepage."""
-    form = LoginForm()
-    if form.validate_on_submit():
-        if form.email.data == 'user@gmail.com' and form.password.data == 'password':
-            flash('You have been logged in!', 'success')
-            return redirect(url_for('home'))
-        else:
-            flash('Login Unsuccessful. Please check your username and password', 'danger')
-    return render_template('login.html', title='Login', form=form)
-
 
 # Specification 1 page route #
 @app.route("/spec1")
