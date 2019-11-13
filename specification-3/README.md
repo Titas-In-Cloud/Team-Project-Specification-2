@@ -1,7 +1,11 @@
-# Flask
+## Description
 
 In this specification, I made a web application using the Python-based web framework Flask as
-part of practical 3 for CSC1034 at Newcastle University.
+part of practical 3 for CSC1034 at Newcastle University. In this web application, I have
+produced a simple to home page which links to other pages. Each specification has its own web
+page in which their respective code is presented on these pages. Users can navigate using the
+navigation bar, they can also log in or register. A brief documentation is presented on the 
+About page. On the homepage, the author of each specification as well as the date is presented.
 
 ## Installation
 
@@ -11,9 +15,10 @@ Run in the terminal:
     
 ## Usage
 
-To run the web application in terminal:
+Run web.py or run in terminal:
     
     python ./specification-3/web.py
+    
     
 ## Libraries
 
@@ -28,8 +33,6 @@ Make sure to install these libraries to run the web application:
 Install these libraries by running in terminal:
 
     pip install (library name)
-
-
 
 ### Specification 3
 
