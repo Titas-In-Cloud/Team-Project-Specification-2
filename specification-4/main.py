@@ -275,8 +275,8 @@ while menu:
                     # Push background image to the screen
                     screen.blit(space, space.get_rect())
                     # Draw all sprites
-                    for entity in all_sprites:
-                        screen.blit(entity.surf, entity.rect)
+                    for sprite in all_sprites:
+                        screen.blit(sprite.surf, sprite.rect)
                     # Lose conditions
                     if pygame.sprite.spritecollide(player, meteors, False, pygame.sprite.collide_circle) or (
                             pygame.sprite.spritecollide(player, enemies, False, pygame.sprite.collide_circle)) or (
