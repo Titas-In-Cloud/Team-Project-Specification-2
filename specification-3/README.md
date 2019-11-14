@@ -4,8 +4,8 @@ In this specification, I made a web application using the Python-based web frame
 part of practical 3 for CSC1034 at Newcastle University. In this web application, I have
 produced a simple to home page which links to other pages. Each specification has its own web
 page in which their respective code is presented on these pages. Users can navigate using the
-navigation bar, they can also log in or register. A brief documentation is presented on the 
-About page. On the homepage, the author of each specification as well as the date is presented.
+navigation bar. A brief documentation is presented on the About page. On the homepage, the 
+author of each specification as well as the date is presented.
 
 ## Installation
 
@@ -19,21 +19,6 @@ Run web.py or run in terminal:
     
     python ./specification-3/web.py
     
-    
-## Libraries
-
-Make sure to install these libraries to run the web application:
-
-* Flask
-* Flask_sqlalchemy
-* Flask_wtf
-* Wtforms
-* Wtforms.validators
-
-Install these libraries by running in terminal:
-
-    pip install (library name)
-
 ### Specification 3
 
 In this challenge you are going to build a web application using a

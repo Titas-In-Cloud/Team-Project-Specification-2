@@ -6,7 +6,7 @@
 <p>
     In this challenge you are going to build a web application using a Python-based web framework. Flask is a common web
     framework that is easy to setup and allows extensibility. You are going to build a simple web application that
-    presents the code written in the previous challenge specifications. The purpose of the webpages is to present the
+    presents the code written in the previous challenge specifications. The purpose of the web pages is to present the
     code neatly with some brief documentation explaining the purpose of the code. What you do here is entirely
     experimental and open for creativity, therefore you can make use of any external libraries for the presentation of
     your code. However, be sure not to 'feature creep'. This challenge is about your ability to investigate a Python
@@ -21,20 +21,6 @@
     own respective pages. I have made all web pages extend from a common template. This templates adds some features to
     the web page including a navigation bar, a sidebar, and adds some style to web page. The navigation bar includes
     links to different specification pages. Some of the template was derived from the javascript jquery bootstrap.
-    This web page also allows users to register and login their account to be able to modify the content on each of the
-    pages. However, I did not want to make this section too complex as this was not required in the objectives of the
-    specification.
-</p>
-<h3>Libraries and Packages</h3>
-<p>
-    The main libraries and packages used in the making of this web page includes:
-<ul>
-    <li>Flask</li>
-    <li>SQLAlchemy</li>
-    <li>Flask-WTF</li>
-    <li>WTForms</li>
-    <li>template-render</li>
-</ul>
 </p>
 <h3>Objectives</h3>
 <p>
@@ -48,43 +34,10 @@
 </p>
 <h3>Code</h3>
 <p>
-   from flask import Flask, render_template, url_for, flash, redirect
-from flask_sqlalchemy import SQLAlchemy
-from forms import RegistrationForm, LoginForm
-from datetime import datetime
+ from flask import Flask, render_template
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'c5bbd3bef1e17016c3c5327b7814eb2e'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-db = SQLAlchemy(app)
-
-
-# User database #
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
-    password = db.Column(db.String(60), nullable=False)
-    posts = db.relationship('Post', backref='author', lazy=True)
-
-    def __repr__(self):
-        """Reproduces username, email, and profile picture."""
-        return f"User('{self.username}', '{self.email}', '{self.image_file}'"
-
-
-# Post database #
-class Post(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    content = db.Column(db.Text, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-    def __repr__(self):
-        """Reproduces title and date posted."""
-        return f"Post('{self.title}', '{self.date_posted}')"
-
 
 # Adding posts #
 posts = [
@@ -129,32 +82,6 @@ def home():
 def about():
     """Making about web page."""
     return render_template('about.html', title='About')
-
-
-# Register page route #
-@app.route("/register", methods=['GET', 'POST'])
-def register():
-    """Making register page which shows a message after submitting registration then redirects user back to homepage."""
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        flash(f'Account created for {form.username.data}!', 'success')
-        return redirect(url_for('home'))
-    return render_template('register.html', title='Register', form=form)
-
-
-# Login page route #
-@app.route("/login", methods=['GET', 'POST'])
-def login():
-    """Making login page which shows a message after logging in and redirects user back to homepage."""
-    form = LoginForm()
-    if form.validate_on_submit():
-        if form.email.data == 'user@gmail.com' and form.password.data == 'password':
-            flash('You have been logged in!', 'success')
-            return redirect(url_for('home'))
-        else:
-            flash('Login Unsuccessful. Please check your username and password', 'danger')
-    return render_template('login.html', title='Login', form=form)
-
 
 # Specification 1 page route #
 @app.route("/spec1")
