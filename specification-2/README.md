@@ -5,13 +5,14 @@ Package was created during the third practical of the **CSC1034** course
 while working on a group project and  is intended to be used for modifying, 
 applying filters and saving modified different types of images in a user-friendly 
 manner. There are numbers of filters which user can apply to the chosen pictures, 
-this includes blur, emboss, greyscale, enhance and a lot more.
+this includes blur, emboss, grayscale, enhance and a lot more.
 
 ## Installation
 This package runs on Python version 3.7 or above and needs additional Pillow 
 image manipulation library installed (it is a fork of the Python Imaging Library 
-(PIL)). To install the Pillow module please write the code specified below in 
-```Terminal```:
+(PIL)). The Pillow library is already installed in the package and is stored in
+the pip file so all you need to do is update it. Run this code in ```Terminal```
+to do this:
 ```
  pipenv update 
 ```
