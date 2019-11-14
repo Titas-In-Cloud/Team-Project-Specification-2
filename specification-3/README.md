@@ -4,8 +4,8 @@ In this specification, I made a web application using the Python-based web frame
 part of practical 3 for CSC1034 at Newcastle University. In this web application, I have
 produced a simple to home page which links to other pages. Each specification has its own web
 page in which their respective code is presented on these pages. Users can navigate using the
-navigation bar. A brief documentation is presented on the About page. On the homepage, the 
-author of each specification as well as the date is presented.
+navigation bar on the top of the page. A brief documentation is presented on the About page. 
+On the homepage, the author of each specification as well as the date is presented.
 
 ## Installation
 
