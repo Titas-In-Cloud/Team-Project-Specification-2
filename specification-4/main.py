@@ -291,7 +291,7 @@ while menu:
                         screen.blit(space, space.get_rect())
                         write(screen, "Game over", 120, screen_width / 2, screen_height / 4)
                         write(screen, "Press any key to play again", 50, screen_width / 2, screen_height * 3 / 4)
-                        write(screen, "Your score was:" + " " + str(result), 40, screen_width / 3, screen_height / 3)
+                        write(screen, "Your score was:" + " " + str(result), 40, screen_width / 2, screen_height / 2)
                         pygame.display.flip()
                         # Reinitializes the game
                         reset = True

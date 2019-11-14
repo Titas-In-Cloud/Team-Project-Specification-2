@@ -1,6 +1,6 @@
 # Arterius
 
-Arterius is a game made by Wojciech Bigosinski as part
+Arterius is a game made by Wojciech Krzysztof Bigosinski as part
 of the project 3 for CSC1034 at Newcastle University.
 
 ## Installation
