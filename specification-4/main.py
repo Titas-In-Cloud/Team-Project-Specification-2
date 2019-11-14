@@ -190,7 +190,7 @@ def write(surf, text, size, x, y):
     font_size = pygame.font.Font(Arial, size)  # Sets the size
     text_surface = font_size.render(text, True, (255, 255, 255))  # Render text, sets color
     text_rect = text_surface.get_rect()  # Gets rectangles posistion
-    text_rect.midbottom = (x, y)  # Text position
+    text_rect.midtop = (x, y)  # Text position
     surf.blit(text_surface, text_rect)  # Push text
 
 
@@ -291,7 +291,7 @@ while menu:
                         screen.blit(space, space.get_rect())
                         write(screen, "Game over", 120, screen_width / 2, screen_height / 4)
                         write(screen, "Press any key to play again", 50, screen_width / 2, screen_height * 3 / 4)
-                        write(screen, "Your score was:" + " " + str(result), 40, screen_width / 2, screen_height / 2)
+                        write(screen, "Your score was:" + " " + str(result), 40, screen_width / 3, screen_height / 3)
                         pygame.display.flip()
                         # Reinitializes the game
                         reset = True
