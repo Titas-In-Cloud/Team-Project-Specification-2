@@ -13,7 +13,7 @@ from pygame.locals import (
     KEYDOWN,
     QUIT,
 )
-# Setting up the window's resolution, loading music and initiating the game
+# Setting up the window's resolution, initializing music module and initiating the game
 screen_width = 800
 screen_height = 600
 pygame.mixer.init()
@@ -30,8 +30,9 @@ class Player(pygame.sprite.Sprite):
         super(Player, self).__init__()  # Allows class to inherit from pygame sprite class
         self.surf = pygame.image.load("./specification-4/resources/playerShip2_blue.png")  # Load the image
         self.surf.set_colorkey((0, 0, 0), RLEACCEL)  # Allows image to blend in with the background and makes it faster
-        self.rect = self.surf.get_rect()
-        self.radius = 18
+        self.rect = self.surf.get_rect()  # Allows manipulating coordinates
+        self.radius = 18  # Sets radius for collision detection
+        #  Starting position and speed
         self.rect.centerx = screen_width / 2
         self.rect.bottom = screen_height
         self.speed_x = 0
@@ -45,11 +46,12 @@ class Player(pygame.sprite.Sprite):
         # Sets starting speed to zero
         self.speed_x = 0
         self.speed_y = 0
+        # When pressing an allowed key moves player by a given value
         if pressed_keys[K_UP]:
-            self.speed_y = -5
+            self.speed_y = -6
             move_up_sound.play()  # Play sound when moving
         if pressed_keys[K_DOWN]:
-            self.speed_y = 6
+            self.speed_y = 7
             move_down_sound.play()  # Play sound when moving
         if pressed_keys[K_LEFT]:
             self.speed_x = -8
@@ -86,7 +88,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.bottom = y
         self.rect.centerx = x
         # Sets speed
-        self.speed_y = -10
+        self.speed_y = -11
 
     def update(self, pressed_keys):
         """Updates bullet object every frame, takes input from keyboard"""
@@ -111,7 +113,7 @@ class Meteor(pygame.sprite.Sprite):
             )
         )
         #  Collision detection
-        self.radius = 65
+        self.radius = 65  # Sets radius for collision detection
         #  Moving speed
         self.speed_y = random.randint(2, 10)
         self.speed_x = random.randint(-3, 3)
@@ -136,10 +138,9 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.surf.get_rect(
             center=(random.randint(150, screen_width - 150),
                     random.randint(-50, -15),))
-        #  Collision detection
-        self.radius = 18
+        self.radius = 18  # Sets radius for collision detection
         #  Moving speed part
-        r = random.choice([(-6, -5), (5, 6)])
+        r = random.choice([(-6, -5), (5, 6)])  # Makes a random choice of either first or second group
         self.speed_x = random.randint(*r)
         self.speed_y = random.randint(3, 5)
 
@@ -169,7 +170,7 @@ class EnemyBullet(pygame.sprite.Sprite):
         self.rect.bottom = y
         self.rect.centerx = x
         # Speed
-        self.speed_y = 5
+        self.speed_y = 6
 
 
     def update(self):
@@ -184,33 +185,35 @@ Arial = pygame.font.match_font('arial')
 
 
 # This function draws given string on a screen
-def draw_text(surf, text, size, x, y):
+def write(surf, text, size, x, y):
     """Draws text given string, size and location"""
-    font_size = pygame.font.Font(Arial, size)
-    text_surface = font_size.render(text, True, (255, 255, 255))
+    font_size = pygame.font.Font(Arial, size)  # Sets the size
+    text_surface = font_size.render(text, True, (255, 255, 255))  # Render text, sets color
     text_rect = text_surface.get_rect()  # Gets rectangles posistion
-    text_rect.midtop = (x, y)  # Text position
+    text_rect.midbottom = (x, y)  # Text position
     surf.blit(text_surface, text_rect)  # Push text
 
 
 pygame.display.set_caption("Arterius") # Set the game title in the window
-clock = pygame.time.Clock() # Start the clock
+clock = pygame.time.Clock()  # Start the clock
 result = 0 # Set the starting score
 # Load the music
 screen = pygame.display.set_mode([screen_width, screen_height]) # Sets the screen mode
 pygame.mixer.music.load("./specification-4/resources/0595.ogg")
-pygame.mixer.music.play(loops=-1)
+pygame.mixer.music.play(loops=-1)  # Loops sound indefinitely
 move_up_sound = pygame.mixer.Sound("./specification-4/resources/phaserUp5.ogg")
 move_down_sound = pygame.mixer.Sound("./specification-4/resources/phaserDown2.ogg")
 collision_sound = pygame.mixer.Sound("./specification-4/resources/zapThreeToneDown.ogg")
 shoot_sound = pygame.mixer.Sound("./specification-4/resources/laser4.ogg")
 
-background = pygame.image.load("./specification-4/resources/starfield.png") # Loads the background
+space = pygame.image.load("./specification-4/resources/starfield.png")  # Loads the background
 # Add the events, set timers
-ADDMETEOR = pygame.USEREVENT + 1
-pygame.time.set_timer(ADDMETEOR, 500)
-ADDENEMY = pygame.USEREVENT + 2
-pygame.time.set_timer(ADDENEMY, 2500)
+add_meteor = pygame.USEREVENT + 1
+# Since the last built in event is userevent,
+# we can simply name it by adding a number
+pygame.time.set_timer(add_meteor, 500)
+add_enemy = pygame.USEREVENT + 2
+pygame.time.set_timer(add_enemy, 2500)
 # Add sprites to pygame groups
 player = Player()
 enemies = pygame.sprite.Group()
@@ -223,16 +226,16 @@ all_sprites.add(player)
 menu = True
 while menu:
     # Draw the background image
-    screen.blit(background, background.get_rect())
+    screen.blit(space, space.get_rect())
     # Draw text
-    draw_text(screen, "Arterius", 80, screen_width / 2, screen_height / 4)
-    draw_text(screen, "To move use arrow keys, to shoot press space", 30,
+    write(screen, "Arterius", 80, screen_width / 2, screen_height / 4)
+    write(screen, "To move use arrow keys, to shoot press space", 30,
               screen_width / 2, screen_height / 2)
-    draw_text(screen, "Press enter to continue", 22, screen_width / 2, screen_height * 3 / 4)
+    write(screen, "Press enter to continue", 22, screen_width / 2, screen_height * 3 / 4)
     pygame.display.flip()
     # True game loop
     for event in pygame.event.get():
-        if event.type == KEYDOWN:  # If enter key is pressed the player is taken out of menu
+        if event.type == KEYDOWN:  # If enter key is pressed the player is taken out of menu into the game
             if event.key == K_RETURN:
                 running = True
                 while running:
@@ -249,12 +252,12 @@ while menu:
                             running = False  # If player presses X in the windows options they quit the game
 
                         # This part manages events - adding enemy spaceships and meteors
-                        elif event.type == ADDMETEOR:
+                        elif event.type == add_meteor:
                             new_meteor = Meteor()
                             meteors.add(new_meteor)
                             all_sprites.add(new_meteor)
 
-                        elif event.type == ADDENEMY:
+                        elif event.type == add_enemy:
                             new_enemy = Enemy()
                             enemies.add(new_enemy)
                             all_sprites.add(new_enemy)
@@ -270,7 +273,7 @@ while menu:
                     # Fill background with black
                     screen.fill((0, 0, 0))
                     # Push background image to the screen
-                    screen.blit(background, background.get_rect())
+                    screen.blit(space, space.get_rect())
                     # Draw all sprites
                     for entity in all_sprites:
                         screen.blit(entity.surf, entity.rect)
@@ -285,10 +288,10 @@ while menu:
                         move_down_sound.stop()
                         # Draw game over screen
                         collision_sound.play()
-                        screen.blit(background, background.get_rect())
-                        draw_text(screen, "Game over", 120, screen_width / 2, screen_height / 4)
-                        draw_text(screen, "Press any key to play again", 50, screen_width / 2, screen_height * 3 / 4)
-                        draw_text(screen, "Your score was:" + " " + str(result), 40, screen_width / 2, screen_height / 2)
+                        screen.blit(space, space.get_rect())
+                        write(screen, "Game over", 120, screen_width / 2, screen_height / 4)
+                        write(screen, "Press any key to play again", 50, screen_width / 2, screen_height * 3 / 4)
+                        write(screen, "Your score was:" + " " + str(result), 40, screen_width / 2, screen_height / 2)
                         pygame.display.flip()
                         # Reinitializes the game
                         reset = True
@@ -309,14 +312,14 @@ while menu:
                         all_sprites.add(player)
                         result = 0
                     # Scoring logic
-                    scores = pygame.sprite.groupcollide(meteors, bullets, True, True)
+                    meteors_shot_down = pygame.sprite.groupcollide(meteors, bullets, True, True)
                     enemies_down = pygame.sprite.groupcollide(enemies, bullets, True, True)
-                    for score in scores:
+                    for meteor in meteors_shot_down:
                         result += 50
                     for enemy_down in enemies_down:
                         result += 50
                     # Draw score
-                    draw_text(screen, str(result), 20, 100, 10)
+                    write(screen, str(result), 20, 100, 10)
 
                     pygame.display.flip()
                     # Framerate
